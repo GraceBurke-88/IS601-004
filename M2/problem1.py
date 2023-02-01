@@ -8,7 +8,18 @@ def process_array(num, arr):
     print("\nProcessing Array({}): \n\n".format(num))
     print(arr)
     print("\nOdds output:\n")
+    
     # TODO add necessary print statement to output only the odd values (hint, best if shown as a single line)
+    # utilized https://www.w3schools.com/python/python_arrays.asp
+    # create array to hold odd values
+    odds = [] 
+    for x in arr:
+        # if value in array does not have a remainder of 0
+        if(x % 2 != 0):
+        #add to array 'odds'
+            odds.append(x)
+    print(odds)
+
 
 
 print("Problem 1")
