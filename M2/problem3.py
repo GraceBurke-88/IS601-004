@@ -11,9 +11,15 @@ def process_array(num, arr):
     # TODO add new code here to print the desired result
     pos = []
     for x in arr:
+        #if x is a string
         if type(x) == str:
-            x = int(x)
-        x = abs(x)
+            #absolute value of x  (x casted into type int)
+            x = abs(int(x))
+            #change back to a string
+            x = str(x)
+        else:
+            x = abs(x)
+        #add to pos array
         pos.append(x)
     
     print(pos)
