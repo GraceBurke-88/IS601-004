@@ -1,0 +1,9 @@
+#quick typecasting
+
+a = [1,2,3,4,5,6]
+
+print(f"{[float(x) for x in a]}")
+
+#functional - can just use as is
+
+#object oriented need the class to be defined
