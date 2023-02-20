@@ -99,7 +99,6 @@ def add_task(name: str, description: str, due: str):
     except: handles the error - promopts for a new input that has the correct format
     else: append the task to the list is the formmating is correct 
     print("Task added successfully: Name - {}, Description - {}, Due - {}".format(name, description, due))
-    ADD PRINT FOR MISSING INPUT
     '''
     
 
