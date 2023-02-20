@@ -58,11 +58,9 @@ def add_task(name: str, description: str, due: str):
     now = datetime.now()
     print("now =", now)
     # update lastActivity with the current datetime value
-    task["lastActivity"] = datetime.now()
+    task["lastActivity"] = now
     # set the name, description, and due date (all must be provided)
     # --> add new key value pairs
-    #if name == "" or description == "" or due == "":
-        #print("missing input")
     if not name or not description or not due:
         print("Missing input")
     else:
@@ -72,7 +70,6 @@ def add_task(name: str, description: str, due: str):
         print(task["description"])
         task["due"] = due
     # due date must match one of the formats mentioned in str_to_datetime()
-        #print("strtodatetime: " + str_to_datetime(due))
         try:
             task["due"] = str_to_datetime(due)
         except ValueError:
@@ -83,8 +80,6 @@ def add_task(name: str, description: str, due: str):
             tasks.append(task)
         # output a message confirming the new task was added or if the addition was rejected due to missing data
         print("Task added successfully: Name - {}, Description - {}, Due - {}".format(name, description, due))
-
-    #print("Task added successfully: Name - {}, Description - {}, Due - {}".format(name, description, due))
     # make sure save() is still called last in this function
     save()
     # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
@@ -92,27 +87,45 @@ def add_task(name: str, description: str, due: str):
     gnb5 implemented on 2/18/23
     -------------------
     First I had to update the 'lastActivity' to have the current datatime value. 
-    I used a print statement to make sure the datetime value was working correctly
-    To set name/desc/due date I add in new key value pairs to the 'task' dictionary
-    To check if xurrent due dates matches a format of str_to_datetime()
-    try: tests the code for errors (tests if due date mateches str_to_datetime(due) format)
-    except: handles the error - promopts for a new input that has the correct format
-    else: append the task to the list is the formmating is correct 
-    print("Task added successfully: Name - {}, Description - {}, Due - {}".format(name, description, due))
+    I used a print statement to make sure the datetime value was working correctly.
+    Then I checked if there was input for all the values and if not print an error message.
+    To set name/desc/due date I add in new key value pairs to the 'task' list.
+    To check if current due dates matches a format of str_to_datetime() I used a 
+    try: tests the code for errors (tests if due date matches str_to_datetime(due) format, a
+    except: handles the error - prompts for a new input that has the correct format, 
+    and else: append the task to the list if the formatting is correct.
+    Last added and print statement and saved everything.
     '''
     
 
 def process_update(index):
     """ extracted the user input prompts to get task data then passes it to update_task() """
     # get the task by index
+    task = tasks[index]
     # consider index out of bounds scenarios and include appropriate message(s) for invalid index
+    if index < 0 or index >= len(tasks):
+        print("Error: Invalid index provided.")
+        return
     # show the existing value of each property where the TODOs are marked in the text of the inputs (replace the TODO related text)
-    # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
-    
-    name = input(f"What's the name of this task? (TODO name) \n").strip()
-    desc = input(f"What's a brief descriptions of this task? (TODO description) \n").strip()
-    due = input(f"When is this task due (format: m/d/y H:M:S) (TODO due) \n").strip()
+    name = input(f"What's the name of this task? (Current value: {task['name']}) \n").strip()
+    desc = input(f"What's a brief descriptions of this task? (Current value: {task['description']}) \n").strip()
+    due = input(f"When is this task due (format: m/d/y H:M:S) (Current value: {task['due']}) \n").strip()
     update_task(index, name=name, description=desc, due=due)
+    #pass the extracted input to update_task
+    update_task(index, name=name, description=desc, due=due)
+    # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
+    '''
+    gnb5 implemented on 2/18/23
+    -------------------
+    1. for the index passed through, found the task item in the list at that index
+    2. if out of bounds (less index of 0 or greater than the length of the list) prints error message/ returns 
+    3. Replaced TODO w/current value of each key which was found for the current task
+    4. Passed index, name, description, and due parameters to the update_task function
+    
+    '''
+    
+
+
 
 def update_task(index: int, name: str, description:str, due: str):
     """ Updates the name, description , due date of a task found by index if an update to the property was provided """
