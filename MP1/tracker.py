@@ -121,23 +121,56 @@ def process_update(index):
     2. if out of bounds (less index of 0 or greater than the length of the list) prints error message/ returns 
     3. Replaced TODO w/current value of each key which was found for the current task
     4. Passed index, name, description, and due parameters to the update_task function
-    
     '''
-    
-
-
 
 def update_task(index: int, name: str, description:str, due: str):
     """ Updates the name, description , due date of a task found by index if an update to the property was provided """
     # find the task by index
+    task = tasks[index]
     # consider index out of bounds scenarios and include appropriate message(s) for invalid index
+    if index < 0 or index >= len(tasks):
+        print("Error: Invalid index provided.")
+        return
+    # create a copy of the original task
+    orig_task = task.copy()
     # update incoming task data if it's provided (if it's not provided use the original task property value)
+    if name:
+        task["name"] = name
+    if description:
+        task["description"] = description
+    if due:
+        try:
+            task["due"] = str_to_datetime(due)
+        except ValueError:
+            print("Error: Due date must match one of the following visual format: mm/dd/yy hh:mm:ss")
+            return "Error: Due date must match one of the following visual format: mm/dd/yy hh:mm:ss"
     # update lastActivity with the current datetime value
+    task["lastActivity"] = datetime.now()
     # output that the task was updated if any items were changed, otherwise mention task was not updated
+    if orig_task != task:
+        print("Task updated, items were changed.")
+    else:
+        print("Task not updated, no items were changed.")
     # make sure save() is still called last in this function
-    # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
-    
     save()
+    # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
+    '''
+    gnb5 implemented on 2/20/23
+    -------------------
+    #1 find the task by index
+    --> for the index passed through, found the task item in the list at that index
+    #2	consider index out-of-bounds scenarios and include an appropriate message(s) for invalid index
+    --> if out of bounds (less index of 0 or greater than the length of the list) prints error message/ returns 
+    #3	update incoming task data if it's provided (if it's not provided use the original task property value)
+    https://www.sololearn.com/Discuss/1582033/how-to-check-if-input-is-empty-in-python
+    --> If provided (use if statements and 'true' if that variable is provided) then set the original task property value to the new value
+    #4	update lastActivity with the current datetime value
+    --> use datetime.now() module and set it equal to the last activity at the current task index
+    #5	output that the task was updated if any items were changed, otherwise mention task was not updated
+    --> Used an if/else statement, I have a variable set before any changes were made to save a local copy of the original task. If the original task has changed prints that items were changed, else prints there were no changes.
+    #6	make sure save() is still called last in this function
+    --> call save() at the end
+    '''
 
 def mark_done(index):
     """ Updates a single task, via index, to a done datetime"""
