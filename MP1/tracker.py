@@ -54,14 +54,54 @@ def list_tasks(_tasks):
 def add_task(name: str, description: str, due: str):
     """ Copies the TASK_TEMPLATE and fills in the passed in data then adds the task to the tasks list """
     task = TASK_TEMPLATE.copy() # don't delete this
+    #check if current datetime is displaying correctly
+    now = datetime.now()
+    print("now =", now)
     # update lastActivity with the current datetime value
+    task["lastActivity"] = datetime.now()
     # set the name, description, and due date (all must be provided)
+    # --> add new key value pairs
+    #if name == "" or description == "" or due == "":
+        #print("missing input")
+    if not name or not description or not due:
+        print("Missing input")
+    else:
+        task["name"] = name
+        print(task["name"])
+        task["description"] = description
+        print(task["description"])
+        task["due"] = due
     # due date must match one of the formats mentioned in str_to_datetime()
-    # add the new task to the tasks list
-    # output a message confirming the new task was added or if the addition was rejected due to missing data
+        #print("strtodatetime: " + str_to_datetime(due))
+        try:
+            task["due"] = str_to_datetime(due)
+        except ValueError:
+            print("Error: Due date must match one of the following visual format: mm/dd/yy hh:mm:ss")
+            return "Error: Due date must match one of the following visual format: mm/dd/yy hh:mm:ss"
+        # add the new task to the tasks list
+        else:
+            tasks.append(task)
+        # output a message confirming the new task was added or if the addition was rejected due to missing data
+        print("Task added successfully: Name - {}, Description - {}, Due - {}".format(name, description, due))
+
+    #print("Task added successfully: Name - {}, Description - {}, Due - {}".format(name, description, due))
     # make sure save() is still called last in this function
-    # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
     save()
+    # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
+    '''
+    gnb5 implemented on 2/18/23
+    -------------------
+    First I had to update the 'lastActivity' to have the current datatime value. 
+    I used a print statement to make sure the datetime value was working correctly
+    To set name/desc/due date I add in new key value pairs to the 'task' dictionary
+    To check if xurrent due dates matches a format of str_to_datetime()
+    try: tests the code for errors (tests if due date mateches str_to_datetime(due) format)
+    except: handles the error - promopts for a new input that has the correct format
+    else: append the task to the list is the formmating is correct 
+    print("Task added successfully: Name - {}, Description - {}, Due - {}".format(name, description, due))
+    ADD PRINT FOR MISSING INPUT
+    '''
+    
 
 def process_update(index):
     """ extracted the user input prompts to get task data then passes it to update_task() """
