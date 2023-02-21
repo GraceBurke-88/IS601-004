@@ -315,13 +315,24 @@ def get_overdue_tasks():
 
 def get_time_remaining(index):
     """ outputs the number of days, hours, minutes, seconds a task has before it's overdue otherwise shows similar info for how far past due it is """
-    # get the task by index
     # consider index out of bounds scenarios and include appropriate message(s) for invalid index
+    if index < 0 or index >= len(tasks):
+        print("Error: Invalid index provided, cannot provide time remaining.")
+        return
+    # get the task by index
+    task = tasks[index]
+    now = datetime.now()
     # get the days, hours, minutes, seconds between the due date and now
+    time_remaining = str_to_datetime(task['due']) - now
     # display the remaining time via print in a clear format showing days, hours, minutes, seconds
     # if the due date is in the past print out how many days, hours, minutes, seconds the task is over due (clearly note that it's over due, values should be positive)
+    if time_remaining.total_seconds() < 0:
+        overdue_time = abs(time_remaining)
+        print(f"Task {index} is overdue by {overdue_time.days} days, {overdue_time.seconds // 3600} hours, {(overdue_time.seconds // 60) % 60} minutes, and {overdue_time.seconds % 60} seconds")
+    else:
+        print(f"Task {index} is due in {time_remaining.days} days, {time_remaining.seconds // 3600} hours, {(time_remaining.seconds // 60) % 60} minutes, and {time_remaining.seconds % 60} seconds.")
     # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
-    task = {}
+    #task = {}
 
 # no changes needed below this line
 
