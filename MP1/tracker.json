@@ -1,0 +1,23 @@
+[
+    {
+        "name": "clean the living room",
+        "due": "12/06/22 13:14:15",
+        "lastActivity": "2023-02-20 19:53:25.174014",
+        "description": "fold laundry and vaccum also put away books",
+        "done": false
+    },
+    {
+        "name": "Walk the dog",
+        "due": "2024-05-05 11:12:13",
+        "lastActivity": "2023-02-20 21:41:05.360908",
+        "description": "Take the dog for a 2 mile walk.",
+        "done": "2023-02-20 21:41:05.360902"
+    },
+    {
+        "name": "Go buy oranges.",
+        "due": "2023-05-16 12:01:12",
+        "lastActivity": "2023-02-20 21:40:32.237014",
+        "description": "Go to Shoprite this week",
+        "done": false
+    }
+]
