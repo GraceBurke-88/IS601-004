@@ -43,6 +43,6 @@
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Pull Request URL for M2-Python-HW to dev</td></tr>
 <tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/GraceBurke-88/IS601-004/pull/8">https://github.com/GraceBurke-88/IS601-004/pull/8</a> </td></tr>
 <tr><td> <em>Sub-Task 2: </em> Talk about what you learned, any issues you had, how you resolve them</td></tr>
-<tr><td> <em>Response:</em> <p>I got a bit of a refresher on Python since I have not<br>worked with the language in a bit. Especially with doing the zybooks assignment<br>there were a lot of little things I has forgotten like the nuiances<br>between dictionaries, arrays, etc. One issue I ran into was how to change<br>the type of a string so that I could change the sign so<br>had to review casting. &nbsp;<br></p><br></td></tr>
+<tr><td> <em>Response:</em> <p>I got a bit of a refresher on Python since I have not<br>worked with the language in a bit. Especially with doing the zybooks assignment<br>there were a lot of little things I had forgotten like the nuiances<br>between dictionaries, arrays, etc. One issue I ran into was how to change<br>the type of a string so that I could change the sign so<br>had to review casting. &nbsp;<br></p><br></td></tr>
 </table></td></tr>
 <table><tr><td><em>Grading Link: </em><a rel="noreferrer noopener" href="https://learn.ethereallab.app/homework/IS601-004-S23/m2-python-hw/grade/gnb5" target="_blank">Grading</a></td></tr></table>
