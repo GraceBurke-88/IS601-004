@@ -187,6 +187,7 @@ def mark_done(index):
     # if it's not done, record the current datetime as the value
     # if it is done, print a message saying it's already completed
     if task["done"]:
+        task["lastActivity"] = datetime.now()
         print("Already done.")
     else:
         task["done"] = datetime.now()
@@ -203,7 +204,8 @@ def mark_done(index):
     #2	consider index out-of-bounds scenarios and include an appropriate message(s) for invalid index
     --> if out of bounds (less index of 0 or greater than the length of the list) prints error message/ returns 
     #3	if it's not done, record the current datetime as the value
-    --> set 'done' property value to current datetime (using datetime.now()). Also, update lastActivity to the current time. Last, printed out a message that the task was completed.
+    --> set 'done' property value to current datetime (using datetime.now()). Also, update lastActivity to the current time. 
+    Last, printed out a message that the task was completed.
     #4	If it is done, print a message saying it's already completed
     -->  Update lastActivity to the current time (used datetime.now()), and use print to display a message that it's already done.
     #5	make sure save() is still called last in this function
@@ -243,13 +245,28 @@ def view_task(index):
 
 def delete_task(index):
     """ deletes a task from the tasks list by index """
-    # delete/remove task from list by index
-    # message should show if it was successful or not
     # consider index out of bounds scenarios and include appropriate message(s) for invalid index
+    if index < 0 or index >= len(tasks):
+        print("Error: Invalid index provided.")
+        return
+    # delete/remove task from list by index
+    del tasks[index]
+    # message should show if it was successful or not
+    print("Task deleted.")
     # make sure save() is still called last in this function
     # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
-    
     save()
+    '''
+    gnb5 implemented on 2/20/23
+    -------------------
+    #1 find the task by index
+    --> for the index passed through, found the task item in the list at that index
+    #2	consider index out-of-bounds scenarios and include an appropriate message(s) for invalid index
+    --> if out of bounds (less index of 0 or greater than the length of the list) prints error message/ returns 
+    #3	delete/remove task from list by index
+    source: https://www.programiz.com/python-programming/del
+    --> use 'del' to delete items at a given index
+    '''
 
 def get_incomplete_tasks():
     """ prints a list of tasks that are not done """
@@ -257,7 +274,18 @@ def get_incomplete_tasks():
     # pass that list into list_tasks()
     # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
     _tasks = []
+    for task in tasks:
+        if not task['done']:
+            _tasks.append(task)
     list_tasks(_tasks)
+    '''
+    gnb5 implemented on 2/20/23
+    -------------------
+    #1 generate a list of tasks where the task is not done
+    --> Used a for loop to get tasks that are not done (aka 'false'), used .append to add them to the list
+    #2 pass that list into list_tasks()
+    --> code already provided
+    '''
 
 def get_overdue_tasks():
     """ prints a list of tasks that are over due completion (not done and expired) """
