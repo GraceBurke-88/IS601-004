@@ -273,11 +273,11 @@ def get_incomplete_tasks():
     # generate a list of tasks where the task is not done
     # pass that list into list_tasks()
     # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
-    _tasks = []
+    incomplete_tasks = []
     for task in tasks:
         if not task['done']:
-            _tasks.append(task)
-    list_tasks(_tasks)
+            incomplete_tasks.append(task)
+    list_tasks(incomplete_tasks)
     '''
     gnb5 implemented on 2/20/23
     -------------------
@@ -292,8 +292,26 @@ def get_overdue_tasks():
     # generate a list of tasks where the due date is older than now and that are not complete
     # pass that list into list_tasks()
     # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
-    _tasks = []
-    list_tasks(_tasks)
+    overdue_tasks = []
+    now = datetime.now()
+    for task in tasks:
+    # generate a list of tasks where the due date is older than now and that are not complete
+        if not task['done'] and task['due'] is not None:
+            due_date = str_to_datetime(task['due'])
+            if due_date < now:
+                overdue_tasks.append(task)
+    list_tasks(overdue_tasks)
+    '''
+    gnb5 implemented on 2/20/23
+    -------------------
+    #1generate a list of tasks where the due date is older than now and that are not complete
+    --> Used a for loop to get tasks that are not done (aka 'false') and have a due date property
+        covert the due date to datetime format using the provided function
+        used comparison operator to find overdue times and used .append to add them to the list
+    #2 pass that list into list_tasks()
+    --> code already provided
+    '''
+
 
 def get_time_remaining(index):
     """ outputs the number of days, hours, minutes, seconds a task has before it's overdue otherwise shows similar info for how far past due it is """
