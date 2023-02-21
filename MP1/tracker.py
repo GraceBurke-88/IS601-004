@@ -169,7 +169,8 @@ def update_task(index: int, name: str, description:str, due: str):
     #4	update lastActivity with the current datetime value
     --> use datetime.now() module and set it equal to the last activity at the current task index
     #5	output that the task was updated if any items were changed, otherwise mention task was not updated
-    --> Used an if/else statement, I have a variable set before any changes were made to save a local copy of the original task. If the original task has changed prints that items were changed, else prints there were no changes.
+    --> Used an if/else statement, I have a variable set before any changes were made to save a local copy of the original task. 
+    If the original task has changed prints that items were changed, else prints there were no changes.
     #6	make sure save() is still called last in this function
     --> call save() at the end
 
