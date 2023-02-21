@@ -304,7 +304,7 @@ def get_overdue_tasks():
     '''
     gnb5 implemented on 2/20/23
     -------------------
-    #1generate a list of tasks where the due date is older than now and that are not complete
+    # 1generate a list of tasks where the due date is older than now and that are not complete
     --> Used a for loop to get tasks that are not done (aka 'false') and have a due date property
         covert the due date to datetime format using the provided function
         used comparison operator to find overdue times and used .append to add them to the list
@@ -323,7 +323,7 @@ def get_time_remaining(index):
     task = tasks[index]
     now = datetime.now()
     # get the days, hours, minutes, seconds between the due date and now
-    time_remaining = str_to_datetime(task['due']) - now
+    time_remaining = (str_to_datetime(task['due'])) - now
     # display the remaining time via print in a clear format showing days, hours, minutes, seconds
     # if the due date is in the past print out how many days, hours, minutes, seconds the task is over due (clearly note that it's over due, values should be positive)
     if time_remaining.total_seconds() < 0:
@@ -333,6 +333,23 @@ def get_time_remaining(index):
         print(f"Task {index} is due in {time_remaining.days} days, {time_remaining.seconds // 3600} hours, {(time_remaining.seconds // 60) % 60} minutes, and {time_remaining.seconds % 60} seconds.")
     # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
     #task = {}
+    '''
+    gnb5 implemented on 2/20/23
+    -------------------
+    #1 find the task by index
+    --> for the index passed through, found the task item in the list at that index
+    #2	consider index out-of-bounds scenarios and include an appropriate message(s) for invalid index
+    --> if out of bounds (less index of 0 or greater than the length of the list) prints error message/ returns 
+    #3 get the days, hours, minutes, seconds between the due date and now
+    --> used subtraction and converted the due date to datetime format using given function
+    #4 to display the remaining time via print in a clear format showing days, hours, minutes, seconds
+    --> POSITIVE values show time remaining -> display values for days/hours/min/sec and format by first converting to seconds and then dividing accordingly
+    #5 if the due date is in the past print out how many days, hours, minutes, seconds the task is overdue (clearly note that it's overdue, values should be positive)
+    --> NEGATIVE values denote time overdue --> use abs value to keep values positive and same math to get days/hours/mins/sec    
+    
+    '''
+
+
 
 # no changes needed below this line
 
