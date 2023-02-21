@@ -1,4 +1,5 @@
 from datetime import datetime
+import copy
 import json
 import os
 
@@ -110,13 +111,12 @@ def process_update(index):
     name = input(f"What's the name of this task? (Current value: {task['name']}) \n").strip()
     desc = input(f"What's a brief descriptions of this task? (Current value: {task['description']}) \n").strip()
     due = input(f"When is this task due (format: m/d/y H:M:S) (Current value: {task['due']}) \n").strip()
-    update_task(index, name=name, description=desc, due=due)
     #pass the extracted input to update_task
     update_task(index, name=name, description=desc, due=due)
     # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
     '''
     gnb5 implemented on 2/18/23
-    -------------------
+    ------------------- 
     1. for the index passed through, found the task item in the list at that index
     2. if out of bounds (less index of 0 or greater than the length of the list) prints error message/ returns 
     3. Replaced TODO w/current value of each key which was found for the current task
@@ -127,12 +127,14 @@ def update_task(index: int, name: str, description:str, due: str):
     """ Updates the name, description , due date of a task found by index if an update to the property was provided """
     # find the task by index
     task = tasks[index]
+    # create a copy of the original task
+    #https://medium.com/@ihuomacbasil/copy-in-python-deep-copy-and-shallow-copy-59b51bda7cde
+    orig_task = task.copy()
+    print(orig_task)
     # consider index out of bounds scenarios and include appropriate message(s) for invalid index
     if index < 0 or index >= len(tasks):
         print("Error: Invalid index provided.")
         return
-    # create a copy of the original task
-    orig_task = task.copy()
     # update incoming task data if it's provided (if it's not provided use the original task property value)
     if name:
         task["name"] = name
@@ -140,17 +142,17 @@ def update_task(index: int, name: str, description:str, due: str):
         task["description"] = description
     if due:
         try:
-            task["due"] = str_to_datetime(due)
+            task["due"] = due
         except ValueError:
             print("Error: Due date must match one of the following visual format: mm/dd/yy hh:mm:ss")
             return "Error: Due date must match one of the following visual format: mm/dd/yy hh:mm:ss"
-    # update lastActivity with the current datetime value
-    task["lastActivity"] = datetime.now()
     # output that the task was updated if any items were changed, otherwise mention task was not updated
     if orig_task != task:
         print("Task updated, items were changed.")
     else:
         print("Task not updated, no items were changed.")
+    # update lastActivity with the current datetime value
+    task["lastActivity"] = datetime.now()
     # make sure save() is still called last in this function
     save()
     # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
@@ -170,26 +172,58 @@ def update_task(index: int, name: str, description:str, due: str):
     --> Used an if/else statement, I have a variable set before any changes were made to save a local copy of the original task. If the original task has changed prints that items were changed, else prints there were no changes.
     #6	make sure save() is still called last in this function
     --> call save() at the end
+
+    was running twice realized I had two calls to update_task in the process_update function
     '''
 
 def mark_done(index):
     """ Updates a single task, via index, to a done datetime"""
     # find task from list by index
+    task = tasks[index]
     # consider index out of bounds scenarios and include appropriate message(s) for invalid index
+    if index < 0 or index >= len(tasks):
+        print("Error: Invalid index provided.")
+        return
     # if it's not done, record the current datetime as the value
     # if it is done, print a message saying it's already completed
+    if task["done"]:
+        print("Already done.")
+    else:
+        task["done"] = datetime.now()
+        task["lastActivity"] = datetime.now()
+        print("Task marked as done.")
     # make sure save() is still called last in this function
-    # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
-
     save()
+    # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
+    '''
+    gnb5 implemented on 2/20/23
+    -------------------
+    #1 find the task by index
+    --> for the index passed through, found the task item in the list at that index
+    #2	consider index out-of-bounds scenarios and include an appropriate message(s) for invalid index
+    --> if out of bounds (less index of 0 or greater than the length of the list) prints error message/ returns 
+    #3	if it's not done, record the current datetime as the value
+    --> set 'done' property value to current datetime (using datetime.now()). Also, update lastActivity to the current time. Last, printed out a message that the task was completed.
+    #4	If it is done, print a message saying it's already completed
+    -->  Update lastActivity to the current time (used datetime.now()), and use print to display a message that it's already done.
+    #5	make sure save() is still called last in this function
+    --> call save() at the end
+
+    '''
+
+
 
 def view_task(index):
     """ View more info about a specific task fetch by index """
-    # find task from list by index
     # consider index out of bounds scenarios and include appropriate message(s) for invalid index
+    if index < 0 or index >= len(tasks):
+        print("Error: Invalid index provided.")
+        return
+    # find task from list by index
+    task = tasks[index]
     # utilize the given print statement when a task is found
     # include your ucid and date as a comment of when you implemented this, briefly summarize the solution
-    task = {}
+    #task = {}
     print(f"""
         [{'x' if task['done'] else ' '}] Task: {task['name']}\n 
         Description: {task['description']} \n 
@@ -197,7 +231,15 @@ def view_task(index):
         Due: {task['due']}\n
         Completed: {task['done'] if task['done'] else '-'} \n
         """.replace('  ', ' '))
-
+    '''
+    gnb5 implemented on 2/20/23
+    -------------------
+    #1 find the task by index
+    --> for the index passed through, found the task item in the list at that index
+    #2	consider index out-of-bounds scenarios and include an appropriate message(s) for invalid index
+    --> if out of bounds (less index of 0 or greater than the length of the list) prints error message/ returns 
+    #3	utilize the given print statement when a task is found
+    '''
 
 def delete_task(index):
     """ deletes a task from the tasks list by index """
