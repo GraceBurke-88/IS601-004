@@ -328,6 +328,7 @@ def get_time_remaining(index):
     # if the due date is in the past print out how many days, hours, minutes, seconds the task is over due (clearly note that it's over due, values should be positive)
     if time_remaining.total_seconds() < 0:
         overdue_time = abs(time_remaining)
+        #https://www.w3resource.com/python-exercises/python-basic-exercise-65.php
         print(f"Task {index} is overdue by {overdue_time.days} days, {overdue_time.seconds // 3600} hours, {(overdue_time.seconds // 60) % 60} minutes, and {overdue_time.seconds % 60} seconds")
     else:
         print(f"Task {index} is due in {time_remaining.days} days, {time_remaining.seconds // 3600} hours, {(time_remaining.seconds // 60) % 60} minutes, and {time_remaining.seconds % 60} seconds.")
