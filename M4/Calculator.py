@@ -20,10 +20,10 @@ class Calculator:
         """
         try:
             val = float(val)
-            print('is_float', val)
+            #print('is_float', val)
             return True
         except:
-            print("not a float")
+            #print("not a float")
             return False
 
     def _is_int(self, val):
@@ -73,9 +73,9 @@ class Calculator:
             return self.add(self.ans, num2)
         else:
             num1 = self._as_number(num1)
-            print(num1)
+            #print(num1)
             num2 = self._as_number(num2)
-            print(num2)
+            #print(num2)
             self.ans = num1+num2
         return self.ans
         #return float(self.ans)
