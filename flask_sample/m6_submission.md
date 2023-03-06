@@ -1,30 +1,31 @@
 <table><tr><td> <em>Assignment: </em> Sample Flask App and Readings</td></tr>
 <tr><td> <em>Student: </em> Grace Burke (gnb5)</td></tr>
-<tr><td> <em>Generated: </em> 3/5/2023 9:33:24 PM</td></tr>
+<tr><td> <em>Generated: </em> 3/5/2023 10:15:55 PM</td></tr>
 <tr><td> <em>Grading Link: </em> <a rel="noreferrer noopener" href="https://learn.ethereallab.app/homework/IS601-004-S23/sample-flask-app-and-readings/grade/gnb5" target="_blank">Grading</a></td></tr></table>
 <table><tr><td> <em>Instructions: </em> <ol><li>&nbsp;Follow the slides from class.&nbsp;</li><li>&nbsp;Get the sample app deployed to Heroku dev</li><li>&nbsp;Once finished with the slides create a pull request from the lesson branch to dev (don't close it yet)&nbsp;</li><li>&nbsp;Create an m6_submission.md file in the same directory as the flask sample app&nbsp;</li><li>&nbsp;Fill in the deliverables below&nbsp;</li><li>&nbsp;Generate the markdown and paste the content into the new md file&nbsp;</li><li>&nbsp;git add/commit/push&nbsp;</li><li>&nbsp;Complete the pull request&nbsp;</li><li>&nbsp;Create a pull request from dev to prod&nbsp;</li><li>&nbsp;Complete the merge&nbsp;</li><li>&nbsp;Locally checkout dev&nbsp;</li><li>&nbsp;git pull the latest dev changes&nbsp;</li><li>&nbsp;On GitHub navigate to the location of the m6_submission.md file from the prod branch&nbsp;</li><li>&nbsp;Grab that direct link and submit it to Canvas</li></ol></td></tr></table>
-<table><tr><td> <em>Deliverable 1: </em> Proof App has been deployed </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707795-a9c94a71-7871-4572-bfae-ad636f8f8474.png"></td></tr>
+<table><tr><td> <em>Deliverable 1: </em> Proof App has been deployed </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707773-e6aef7cb-d5b2-4053-bbb1-b09fc609041e.png"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Screenshot the output of the app (including the url) showing it's running from Heroku dev</td></tr>
-<tr><td><table><tr><td>Missing Image</td></tr>
-<tr><td> <em>Caption:</em> (missing)</td></tr>
+<tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/70772404/223006875-a97a4a06-7eaa-4346-af15-001ad75dbbf0.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>showing deployment of <a href="https://is601-gnb5-dev.herokuapp.com/">https://is601-gnb5-dev.herokuapp.com/</a><br></p>
+</td></tr>
 </table></td></tr>
 <tr><td> <em>Sub-Task 2: </em> Add a direct link to the app here (prod url)</td></tr>
-<tr><td>Not provided</td></tr>
+<tr><td> <a rel="noreferrer noopener" target="_blank" href="https://is601-gnb5-prod.herokuapp.com/">https://is601-gnb5-prod.herokuapp.com/</a> </td></tr>
 </table></td></tr>
-<table><tr><td> <em>Deliverable 2: </em> Misc </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707795-a9c94a71-7871-4572-bfae-ad636f8f8474.png"></td></tr>
+<table><tr><td> <em>Deliverable 2: </em> Misc </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707773-e6aef7cb-d5b2-4053-bbb1-b09fc609041e.png"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Add a link to the pull request from Flask-Sample-HW to Dev</td></tr>
-<tr><td>Not provided</td></tr>
+<tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/GraceBurke-88/IS601-004/pull/22">https://github.com/GraceBurke-88/IS601-004/pull/22</a> </td></tr>
 <tr><td> <em>Sub-Task 2: </em> Did you have any issues during setup and if so how did you resolve them, otherwise what did you learn?</td></tr>
-<tr><td> <em>Response:</em> <p>(missing)</p><br></td></tr>
+<tr><td> <em>Response:</em> <p>One issue I ran into was with my folder structure. I accidentally created<br>workflows inside of a workflows file and with the UI of VS Code<br>it was difficult to see this. Due to this issue, my actions would<br>not show up so I had a hard time debugging. I was able<br>to figure this out by looking back at my git history in the<br>terminal and saw workflows/workflows to figure out the issue.&nbsp;<br></p><br></td></tr>
 </table></td></tr>
-<table><tr><td> <em>Deliverable 3: </em> Readings </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707795-a9c94a71-7871-4572-bfae-ad636f8f8474.png"></td></tr>
+<table><tr><td> <em>Deliverable 3: </em> Readings </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707773-e6aef7cb-d5b2-4053-bbb1-b09fc609041e.png"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> What can you tell me about docker? Describe the various steps needed to get an app ran inside a docker container in your own words</td></tr>
-<tr><td> <em>Response:</em> <p>(missing)</p><br></td></tr>
+<tr><td> <em>Response:</em> <ul><br><li>Docker is a platform that allows one to run containers.&nbsp;<div>- The containers<br>are &#39;self-contained&#39; meaning they have the OS and environment variables, file locations, etc.<br>that are needed for the software to run</div><div><br></div><div>## Steps to use Docker with<br>Python Flask:</div><div>1. Create a Flask application&nbsp;</div><div>2. Write a Dockerfile to specify the image<br>for your Flask application.</div><div>3. Build the Docker image using the Dockerfile.</div><div>4. Run the<br>Docker container using the newly created image.</div><div><br></div><div>-&nbsp;&nbsp;<a href="https://">https://www.infoworld.com/article/3204171/what-is-docker-the-spark-for-the-container-revolution.html&nbsp;</a><div><div><br></div></div></div><br></li><br></ul><br></td></tr>
 <tr><td> <em>Sub-Task 2: </em> What is Heroku? Why do you feel it was chosen for this class?</td></tr>
-<tr><td> <em>Response:</em> <p>(missing)</p><br></td></tr>
+<tr><td> <em>Response:</em> <p>Heroku is a hosting platform for websites. It can be used to easily<br>deploy websites without worrying about server management. Having used AFS before, I can<br>say Heroku takes out a lot of issues I had in the past.<br>For this class, we don&#39;t have to worry about server configs and it&#39;s<br>also free for students to use.<div><div><br></div><div>source:&nbsp;<a href="https://levelup.gitconnected.com/all-you-need-to-know-about-heroku-in-5-minutes-7d4ec8849114">https://levelup.gitconnected.com/all-you-need-to-know-about-heroku-in-5-minutes-7d4ec8849114</a></div></div><br></p><br></td></tr>
 <tr><td> <em>Sub-Task 3: </em> What is flask? List a few things you learned about it</td></tr>
-<tr><td> <em>Response:</em> <p>(missing)</p><br></td></tr>
+<tr><td> <em>Response:</em> <p>Flask is a Python framework that essentially allows us to bypass a lot<br>of the nitty gritty and get straight to the development. It has a<br>lot of built-in tools and features that help with development.&nbsp;<div><br></div><div>source:&nbsp;<a href="https://pythonbasics.org/what-is-flask-python/">https://pythonbasics.org/what-is-flask-python/</a></div><br></p><br></td></tr>
 <tr><td> <em>Sub-Task 4: </em> What is the difference between a Dockerfile and a Github Action .yml file?</td></tr>
-<tr><td> <em>Response:</em> <p>(missing)</p><br></td></tr>
+<tr><td> <em>Response:</em> <p>A Dockerfile expresses the configuration for a Docker container (basically instructions on what<br>it needs and how to behave).&nbsp; In contrast, a Github action .yml file<br>is a set of instructions on how to run an automated workflow on<br>Github (this can involve deployment, testing, or building). Both files involve instructions but<br>one is for Docker and one is for Github, this also means they<br>are used at different points in the overall workflow of the application (a<br>Dockerfile could run during a Github Action)<div><br></div><div><a href="https://docs.docker.com/build/ci/github-actions/">https://docs.docker.com/build/ci/github-actions/</a></div><div><a href="https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions">https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions</a><br></div><div><br><div><br></div><div><br></div></div><br></p><br></td></tr>
 </table></td></tr>
 <table><tr><td><em>Grading Link: </em><a rel="noreferrer noopener" href="https://learn.ethereallab.app/homework/IS601-004-S23/sample-flask-app-and-readings/grade/gnb5" target="_blank">Grading</a></td></tr></table>
