@@ -50,7 +50,7 @@ class BurgerMachine:
     patties = [Patty(name="Turkey", quantity=10, cost=1), Patty(name="Veggie", quantity=10, cost=1), Patty(name="Beef", quantity=10, cost=1)]
     toppings = [Topping(name="Lettuce", quantity=10, cost=.25), Topping(name="Tomato", quantity=10, cost=.25), Topping(name="Pickles", quantity=10, cost=.25), \
     Topping(name="Cheese", quantity=10, cost=.25), Topping(name="Ketchup", quantity=10, cost=.25),
-     Topping(name="Mayo", quantity=10, cost=.25), Topping(name="Mustard", quantity=10, cost=.25),Topping(name="BBQ", quantity=10, cost=.25)] 
+    Topping(name="Mayo", quantity=10, cost=.25), Topping(name="Mustard", quantity=10, cost=.25),Topping(name="BBQ", quantity=10, cost=.25)] 
 
 
     # variables
@@ -155,7 +155,20 @@ class BurgerMachine:
 
     def calculate_cost(self):
         # TODO add the calculation expression/logic for the inprogress_burger
-        return 10000
+        cost = 0.00
+        for item in self.inprogress_burger:
+            cost += item.cost
+            print("Total cost so far: ${:.2f}".format(cost))
+            #("Area = {:.2f}".format(area))
+        #{self.item.cost}
+        return cost
+    '''
+    ucid: gnb5 
+    date: 03/14/23
+    '''
+        
+
+
 
     def run(self):
         try:
