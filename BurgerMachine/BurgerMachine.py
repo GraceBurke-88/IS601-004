@@ -47,7 +47,7 @@ class BurgerMachine:
 
 
     buns = [Bun(name="No Bun", cost=0), Bun(name="White Burger Bun", cost=1), Bun("Wheat Burger Bun", cost=1.25),Bun("Lettuce Wrap", cost=1.5)]
-    patties = [Patty(name="Turkey", quantity=0, cost=1), Patty(name="Veggie", quantity=10, cost=1), Patty(name="Beef", quantity=10, cost=1)]
+    patties = [Patty(name="Turkey", quantity=10, cost=1), Patty(name="Veggie", quantity=10, cost=1), Patty(name="Beef", quantity=2, cost=1)]
     toppings = [Topping(name="Lettuce", quantity=10, cost=.25), Topping(name="Tomato", quantity=10, cost=.25), Topping(name="Pickles", quantity=10, cost=.25), \
     Topping(name="Cheese", quantity=10, cost=.25), Topping(name="Ketchup", quantity=10, cost=.25),
     Topping(name="Mayo", quantity=10, cost=.25), Topping(name="Mustard", quantity=10, cost=.25),Topping(name="BBQ", quantity=10, cost=.25)] 
@@ -141,9 +141,7 @@ class BurgerMachine:
     def handle_pay(self, expected, total):
         if self.currently_selecting != STAGE.Pay:
             raise InvalidStageException
-        #This code removes the dollar sign from the expected value 
-        expected_str = "${:.2f}".format(expected)
-        if total == expected_str:
+        if total == str(expected):
             print("Thank you! Enjoy your burger!")
             self.total_burgers += 1
             self.total_sales += expected # only if successful
@@ -233,10 +231,12 @@ class BurgerMachine:
             print(f"Sorry, you have exceeded the maximum allowed {self.currently_selecting.name.lower()}s of {self.MAX_PATTIES} for this burger.")
             # move to the next stage/category
             self.currently_selecting = STAGE.Toppings
+            ''' gnb5 3/18/23 '''
         # handle InvalidPaymentException
         except InvalidPaymentException:
         # show an appropriate message
             print("That is an invalid payment")
+            ''' gnb5 3/18/23 '''
         except:
             # this is a default catch all, follow the steps above
             print("Something went wrong")
