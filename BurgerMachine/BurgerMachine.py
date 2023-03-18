@@ -47,7 +47,7 @@ class BurgerMachine:
 
 
     buns = [Bun(name="No Bun", cost=0), Bun(name="White Burger Bun", cost=1), Bun("Wheat Burger Bun", cost=1.25),Bun("Lettuce Wrap", cost=1.5)]
-    patties = [Patty(name="Turkey", quantity=10, cost=1), Patty(name="Veggie", quantity=10, cost=1), Patty(name="Beef", quantity=10, cost=1)]
+    patties = [Patty(name="Turkey", quantity=0, cost=1), Patty(name="Veggie", quantity=10, cost=1), Patty(name="Beef", quantity=10, cost=1)]
     toppings = [Topping(name="Lettuce", quantity=10, cost=.25), Topping(name="Tomato", quantity=10, cost=.25), Topping(name="Pickles", quantity=10, cost=.25), \
     Topping(name="Cheese", quantity=10, cost=.25), Topping(name="Ketchup", quantity=10, cost=.25),
     Topping(name="Mayo", quantity=10, cost=.25), Topping(name="Mustard", quantity=10, cost=.25),Topping(name="BBQ", quantity=10, cost=.25)] 
@@ -141,11 +141,13 @@ class BurgerMachine:
     def handle_pay(self, expected, total):
         if self.currently_selecting != STAGE.Pay:
             raise InvalidStageException
-        if total == str(expected):
+        #This code removes the dollar sign from the expected value 
+        expected_str = "${:.2f}".format(expected)
+        if total == expected_str:
             print("Thank you! Enjoy your burger!")
             self.total_burgers += 1
             self.total_sales += expected # only if successful
-            #print(f"Total sales so far {self.total_sales}")
+            print(f"Total sales so far ${self.total_sales}")
             self.reset()
         else:
             raise InvalidPaymentException
@@ -162,13 +164,7 @@ class BurgerMachine:
             #("Area = {:.2f}".format(area))
         #{self.item.cost}
         return cost
-    '''
-    ucid: gnb5 
-    date: 03/14/23
-    '''
-        
-
-
+    ''' ucid: gnb5 date: 03/14/23 '''
 
     def run(self):
         try:
@@ -188,7 +184,7 @@ class BurgerMachine:
                 expected = self.calculate_cost()
                 # show expected value as currency format
                 # require total to be entered as currency format
-                total = input(f"Your total is {expected}, please enter the exact value.\n")
+                total = input(f"Your total is ${expected}, please enter the exact value.\n")
                 self.handle_pay(expected, total)
                 
                 choice = input("What would you like to do? (order or quit)\n")
@@ -202,18 +198,45 @@ class BurgerMachine:
             print("Quitting the burger machine")
             sys.exit()
         # handle OutOfStockException
+        except OutOfStockException:
+            print(f"Sorry, that {self.currently_selecting.name.lower()} is out of stock.")
+            print(f"Please choose another {self.currently_selecting.name.lower()}")
+            ''' gnb5 3/18/23 '''
             # show an appropriate message of what stage/category was out of stock
+            # Shows how the OutOfStockException is handled with proper user feedback and continued program flow. 
+            # Show the stage/category that the choice was out of stock in
         # handle NeedsCleaningException
+        except NeedsCleaningException:
+            print("Needs to be cleaned")
+            cleaned = False
+            while not cleaned:
+                user_input = input("Please type 'clean' to clean the machine.\n")
+                if user_input.lower() == "clean":
+                    self.clean_machine()
+                    print("The machine has been cleaned.")
+                    cleaned = True
+                else:
+                    print("Invalid input. Please type 'clean' to clean the machine.")
+            ''' gnb5 3/18/23 '''
             # prompt user to type "clean" to trigger clean_machine()
             # any other input is ignored
             # print a message whether or not the machine was cleaned
         # handle InvalidChoiceException
+        except InvalidChoiceException:
             # show an appropriate message of what stage/category was the invalid choice was in
+            print(f"Sorry, that is an invalid choice for {self.currently_selecting.name.lower()}s.")
+            print(f"Please choose a different {self.currently_selecting.name.lower()}")
+            ''' gnb5 3/18/23 '''
         # handle ExceededRemainingChoicesException
+        except ExceededRemainingChoicesException:
             # show an appropriate message of which stage/category was exceeded
+            print(f"Sorry, you have exceeded the maximum allowed {self.currently_selecting.name.lower()}s of {self.MAX_PATTIES} for this burger.")
             # move to the next stage/category
+            self.currently_selecting = STAGE.Toppings
         # handle InvalidPaymentException
-            # show an appropriate message
+        except InvalidPaymentException:
+        # show an appropriate message
+            print("That is an invalid payment")
         except:
             # this is a default catch all, follow the steps above
             print("Something went wrong")
@@ -223,7 +246,6 @@ class BurgerMachine:
     def start(self):
         self.run()
 
-    
 if __name__ == "__main__":
     bm = BurgerMachine()
     bm.start()
