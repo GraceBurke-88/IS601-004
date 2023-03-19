@@ -75,6 +75,7 @@ def test_toppings_in_stock(machine):
     assert len(machine.inprogress_burger) == 3
 
 #  Test 4 - Can add up to 3 patties of any combination
+''' gnb5 3/18/23 '''
 def test_adding_patties(machine):
     machine.reset()
     #increment beef patties to 1 
@@ -101,7 +102,7 @@ def test_adding_patties(machine):
     print(len(machine.inprogress_burger))
 
 # Test 5 - Can add up to 3 toppings of any combination
-
+''' gnb5 3/18/23 '''
 def test_adding_toppings(machine):
     machine.reset()
     print(len(machine.inprogress_burger))
@@ -133,7 +134,9 @@ def test_adding_toppings(machine):
     assert machine.inprogress_burger[2].name == "Tomato"
     assert machine.inprogress_burger[3].name == "BBQ"
 
-# Test 6 - cost must be calculated properly based on the choices (check for currency format as part of this) (test case should have a few permutations of at least 3 valid burgers)
+# Test 6 - cost must be calculated properly based on the choices 
+# (check for currency format as part of this) (test case should have a few permutations of at least 3 valid burgers)
+''' gnb5 3/18/23 '''
 def test_cost_calculation(machine):
     machine.reset()
     machine.patties[2].quantity = 5
@@ -173,3 +176,98 @@ def test_cost_calculation(machine):
     machine.handle_toppings("done")
     with pytest.raises(InvalidPaymentException):
         machine.handle_pay(100, "invalid currency format")
+
+# Test 7 - Total Sales (sum of costs) must be calculated properly (test case should have a few permutations of at least 3 valid burgers)
+''' gnb5 3/18/23 '''
+def test_total_sales(machine):
+    machine.reset()
+    print("the total sales is:", machine.total_sales)
+    machine.patties[2].quantity = 5
+
+    # make a few orders with different combinations of buns, patties, and toppings
+    # order 1
+    machine.handle_bun("white burger bun")
+    machine.handle_patty("beef")
+    machine.handle_patty("next")
+    machine.handle_toppings("bbq")
+    machine.handle_toppings("done")
+    cost = machine.calculate_cost() 
+    machine.handle_pay(cost, "2.25")
+
+    # order 2
+    machine.reset()
+    machine.handle_bun("lettuce wrap")
+    machine.handle_patty("turkey")
+    machine.handle_patty("turkey")
+    machine.handle_patty("next")
+    machine.handle_toppings("cheese")
+    machine.handle_toppings("ketchup")
+    machine.handle_toppings("done")
+    cost = machine.calculate_cost()
+    #need to fix bug should be 4.00 
+    machine.handle_pay(cost, "4.0")
+
+    # order 3
+    machine.reset()
+    machine.handle_bun("no bun")
+    machine.handle_patty("veggie")
+    machine.handle_patty("next")
+    machine.handle_toppings("done")
+    cost = machine.calculate_cost() 
+    machine.handle_pay(cost, "1.0")
+
+    assert machine.total_sales == 7.25
+
+# 	Test 8 - Total burgers should properly increment for each purchase
+''' gnb5 3/18/23 '''
+def test_total_burgers(machine):
+    # reset the machine
+    machine.reset()
+    
+    # create an order 
+    machine.handle_bun("white burger bun")
+    machine.handle_patty("beef")
+    machine.handle_patty("turkey")
+    machine.handle_patty("turkey")
+    machine.handle_patty("next")
+    machine.handle_toppings("lettuce")
+    machine.handle_toppings("cheese")
+    machine.handle_toppings("done")
+    machine.handle_toppings("done")
+    cost = machine.calculate_cost()
+    machine.handle_pay(cost, "4.5")
+    
+    # verify that the total burgers has incremented by 1
+    assert machine.total_burgers == 1
+    print("Total burgers:", machine.total_burgers)
+    
+    #Create another order
+    machine.handle_bun("white burger bun")
+    machine.handle_patty("beef")
+    machine.handle_patty("turkey")
+    machine.handle_patty("turkey")
+    machine.handle_patty("next")
+    machine.handle_toppings("lettuce")
+    machine.handle_toppings("cheese")
+    machine.handle_toppings("done")
+    cost = machine.calculate_cost()
+    machine.handle_pay(cost, "4.5")
+
+
+    # verify that the total burgers has incremented by 1
+    assert machine.total_burgers == 2
+    print("Total burgers:", machine.total_burgers)
+
+    # create a third order 
+    machine.reset()
+    machine.handle_bun("no bun")
+    machine.handle_patty("veggie")
+    machine.handle_patty("beef")
+    machine.handle_patty("next")
+    machine.handle_toppings("bbq")
+    machine.handle_toppings("done")
+    cost = machine.calculate_cost()
+    machine.handle_pay(cost, "2.25")
+    
+    # verify that the total burgers has incremented by 1
+    assert machine.total_burgers == 3
