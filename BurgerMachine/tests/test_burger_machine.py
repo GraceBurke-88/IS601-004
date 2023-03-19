@@ -146,7 +146,6 @@ def test_cost_calculation(machine):
     machine.handle_patty("next")
     machine.handle_toppings("done")
     assert machine.calculate_cost() == 1.0
-    machine.handle_pay(1.0,"1.0")
     
 
     # A burger with no toppings or extra patties
@@ -155,7 +154,7 @@ def test_cost_calculation(machine):
     machine.handle_patty("beef")
     machine.handle_toppings("done")
     assert machine.calculate_cost() == 2.0
-    machine.handle_pay(2.0, "2.0")
+    machine.handle_pay(2.0, "2.00")
     
     # A burger with two toppings and one extra patty
     machine.reset()
@@ -167,7 +166,7 @@ def test_cost_calculation(machine):
     machine.handle_toppings("tomato")
     machine.handle_toppings("done")
     assert machine.calculate_cost() == 3.5
-    machine.handle_pay(3.5, "3.5")
+    machine.handle_pay(3.5, "3.50")
 
     # Test invalid currency format
     machine.reset()
@@ -205,7 +204,7 @@ def test_total_sales(machine):
     machine.handle_toppings("done")
     cost = machine.calculate_cost()
     #need to fix bug should be 4.00 
-    machine.handle_pay(cost, "4.0")
+    machine.handle_pay(cost, "4.00")
 
     # order 3
     machine.reset()
@@ -214,7 +213,7 @@ def test_total_sales(machine):
     machine.handle_patty("next")
     machine.handle_toppings("done")
     cost = machine.calculate_cost() 
-    machine.handle_pay(cost, "1.0")
+    machine.handle_pay(cost, "1.00")
 
     assert machine.total_sales == 7.25
 
@@ -235,8 +234,7 @@ def test_total_burgers(machine):
     machine.handle_toppings("done")
     machine.handle_toppings("done")
     cost = machine.calculate_cost()
-    machine.handle_pay(cost, "4.5")
-    
+    machine.handle_pay(cost, "4.50")
     # verify that the total burgers has incremented by 1
     assert machine.total_burgers == 1
     print("Total burgers:", machine.total_burgers)
@@ -251,9 +249,7 @@ def test_total_burgers(machine):
     machine.handle_toppings("cheese")
     machine.handle_toppings("done")
     cost = machine.calculate_cost()
-    machine.handle_pay(cost, "4.5")
-
-
+    machine.handle_pay(cost, "4.50")
     # verify that the total burgers has incremented by 1
     assert machine.total_burgers == 2
     print("Total burgers:", machine.total_burgers)
@@ -268,6 +264,6 @@ def test_total_burgers(machine):
     machine.handle_toppings("done")
     cost = machine.calculate_cost()
     machine.handle_pay(cost, "2.25")
-    
+
     # verify that the total burgers has incremented by 1
     assert machine.total_burgers == 3

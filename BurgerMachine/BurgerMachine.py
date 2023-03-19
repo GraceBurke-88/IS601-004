@@ -3,6 +3,7 @@ import sys
 from BurgerMachineExceptions import ExceededRemainingChoicesException, InvalidChoiceException, InvalidStageException, NeedsCleaningException, OutOfStockException
 from BurgerMachineExceptions import InvalidPaymentException
 
+
 class Usable:
     name = ""
     quantity = 0
@@ -141,7 +142,8 @@ class BurgerMachine:
     def handle_pay(self, expected, total):
         if self.currently_selecting != STAGE.Pay:
             raise InvalidStageException
-        if total == str(expected):
+        #format to 2 decimals
+        if total == str("{:.2f}".format(expected)):
             print("Thank you! Enjoy your burger!")
             self.total_burgers += 1
             self.total_sales += expected # only if successful
@@ -153,14 +155,13 @@ class BurgerMachine:
     def print_current_burger(self):
         print(f"Current Burger: {','.join([x.name for x in self.inprogress_burger])}")
 
+
     def calculate_cost(self):
         # TODO add the calculation expression/logic for the inprogress_burger
         cost = 0.00
         for item in self.inprogress_burger:
             cost += item.cost
-            print("Total cost so far: ${:.2f}".format(cost))
-            #("Area = {:.2f}".format(area))
-        #{self.item.cost}
+            print("add", cost)
         return cost
     ''' ucid: gnb5 date: 03/14/23 '''
 
@@ -180,9 +181,8 @@ class BurgerMachine:
                 self.print_current_burger()
             elif self.currently_selecting == STAGE.Pay:
                 expected = self.calculate_cost()
-                # show expected value as currency format
-                # require total to be entered as currency format
-                total = input(f"Your total is ${expected}, please enter the exact value.\n")
+                expected_formatted = "{:.2f}".format(expected)
+                total = input(f"Your total is ${expected_formatted}, please enter the exact value.\n")
                 self.handle_pay(expected, total)
                 
                 choice = input("What would you like to do? (order or quit)\n")
