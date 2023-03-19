@@ -31,10 +31,10 @@ def test_bun_first_selection(machine):
 def test_patties_in_stock(machine):
     machine.reset()
     # make sure there are initial patties in stock
-    print(machine.patties[0])
+    #print(machine.patties[0])
     assert machine.patties[0].quantity > 0
     assert machine.patties[1].quantity > 0
-    print(machine.patties[2])
+    #print(machine.patties[2])
     assert machine.patties[2].quantity > 0
 
     # select a bun first
@@ -80,7 +80,7 @@ def test_adding_patties(machine):
     machine.reset()
     #increment beef patties to 1 
     machine.patties[2].quantity = 1
-    print(len(machine.inprogress_burger))
+    #print(len(machine.inprogress_burger))
     # select a bun first
     machine.handle_bun("white burger bun")
 
@@ -99,20 +99,20 @@ def test_adding_patties(machine):
     with pytest.raises(ExceededRemainingChoicesException):
         machine.handle_patty("beef")
 
-    print(len(machine.inprogress_burger))
+    #print(len(machine.inprogress_burger))
 
 # Test 5 - Can add up to 3 toppings of any combination
 ''' gnb5 3/18/23 '''
 def test_adding_toppings(machine):
     machine.reset()
-    print(len(machine.inprogress_burger))
+    #print(len(machine.inprogress_burger))
     #BBQ gets quantity of 5
     machine.toppings[7].quantity = 5
 
     # select a bun first
     machine.handle_bun("white burger bun")
     machine.handle_patty("next")
-    print(len(machine.inprogress_burger))
+    #print(len(machine.inprogress_burger))
     # add some toppings
     machine.handle_toppings("lettuce")
     machine.handle_toppings("tomato")
@@ -180,7 +180,7 @@ def test_cost_calculation(machine):
 ''' gnb5 3/18/23 '''
 def test_total_sales(machine):
     machine.reset()
-    print("the total sales is:", machine.total_sales)
+    print("The total sales when starting:", machine.total_sales)
     machine.patties[2].quantity = 5
 
     # make a few orders with different combinations of buns, patties, and toppings
@@ -267,3 +267,4 @@ def test_total_burgers(machine):
 
     # verify that the total burgers has incremented by 1
     assert machine.total_burgers == 3
+    print("Total burgers:", machine.total_burgers)

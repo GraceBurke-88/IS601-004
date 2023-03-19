@@ -147,7 +147,8 @@ class BurgerMachine:
             print("Thank you! Enjoy your burger!")
             self.total_burgers += 1
             self.total_sales += expected # only if successful
-            print(f"Total sales so far ${self.total_sales}")
+            #print(f"Total sales so far ${self.total_sales}")
+            print(f"Total sales so far ${self.total_sales:.2f}")
             self.reset()
         else:
             raise InvalidPaymentException
@@ -161,7 +162,7 @@ class BurgerMachine:
         cost = 0.00
         for item in self.inprogress_burger:
             cost += item.cost
-            print("add", cost)
+            #print("add", cost)
         return cost
     ''' ucid: gnb5 date: 03/14/23 '''
 
