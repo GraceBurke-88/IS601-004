@@ -44,7 +44,7 @@ def test_patties_in_stock(machine):
     # had to change the initial quatity of beef patties to 2
     machine.handle_patty("beef")
     assert machine.remaining_patties == 2
-    assert machine.patties[2].quantity == 1 #assuming that the initial quantity is 10 for beef patties
+    assert machine.patties[2].quantity == 1 #assuming that the initial quantity is 2 for beef patties
 
     # try to add a patty that's out of stock
     machine.handle_patty("beef")

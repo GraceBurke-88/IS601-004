@@ -158,13 +158,13 @@ class BurgerMachine:
 
 
     def calculate_cost(self):
-        # TODO add the calculation expression/logic for the inprogress_burger
         cost = 0.00
         for item in self.inprogress_burger:
             cost += item.cost
             #print("add", cost)
         return cost
     ''' ucid: gnb5 date: 03/14/23 '''
+    '''  gnb5 updated 03/19/23 '''
 
     def run(self):
         try:
@@ -181,6 +181,7 @@ class BurgerMachine:
                 self.handle_toppings(toppings)
                 self.print_current_burger()
             elif self.currently_selecting == STAGE.Pay:
+                ''' gnb5 3/19/23 '''
                 expected = self.calculate_cost()
                 expected_formatted = "{:.2f}".format(expected)
                 total = input(f"Your total is ${expected_formatted}, please enter the exact value.\n")
@@ -228,10 +229,16 @@ class BurgerMachine:
             ''' gnb5 3/18/23 '''
         # handle ExceededRemainingChoicesException
         except ExceededRemainingChoicesException:
-            # show an appropriate message of which stage/category was exceeded
-            print(f"Sorry, you have exceeded the maximum allowed {self.currently_selecting.name.lower()}s of {self.MAX_PATTIES} for this burger.")
-            # move to the next stage/category
-            self.currently_selecting = STAGE.Toppings
+            if self.currently_selecting == STAGE.Patty:
+                # show an appropriate message of which stage/category was exceeded
+                print(f"Sorry, you have exceeded the maximum allowed {self.currently_selecting.name.lower()}s of {self.MAX_PATTIES} for this burger.")
+                # move to the next stage/category
+                self.currently_selecting = STAGE.Toppings 
+            elif self.currently_selecting == STAGE.Toppings:
+                # show an appropriate message of which stage/category was exceeded
+                print(f"Sorry, you have exceeded the maximum allowed {self.currently_selecting.name.lower()}s of {self.MAX_TOPPINGS} for this burger.")
+                # move to the next stage/category
+                self.currently_selecting = STAGE.Pay
             ''' gnb5 3/18/23 '''
         # handle InvalidPaymentException
         except InvalidPaymentException:
