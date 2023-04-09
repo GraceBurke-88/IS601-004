@@ -8,8 +8,8 @@ from flask_caching import Cache
 # added so modules can be found between the two different lookup states:
 # from tests and from regular running of the app
 CURR_DIR = os.path.dirname(os.path.abspath(__file__))
-print(CURR_DIR)
-sys.path.append(CURR_DIR)
+#print(CURR_DIR)
+#sys.path.append(CURR_DIR)
 
 cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
 
@@ -27,9 +27,9 @@ def create_app(config_filename=''):
         # given
         from views.geography import geo
         app.register_blueprint(geo)
-        
         from views.admin import admin
         app.register_blueprint(admin)
+        print(app.url_map) 
         from views.company import company
         app.register_blueprint(company)
         from views.employee import employee
