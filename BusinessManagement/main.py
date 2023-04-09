@@ -48,6 +48,7 @@ def create_app(config_filename=''):
                 if result.status:
                     return result.rows or []
             except Exception as e:
+                print(f"Error while executing get_companies: {e}")
                 print(e)
             return []
         # DON'T DELETE, this cleans up the DB connection after each request

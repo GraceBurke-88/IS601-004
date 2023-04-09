@@ -5,7 +5,7 @@
 {% from "sort_filter.html" import sort_filter %}
 <div class="container-fluid">
     <div class="h1 text-center">Company Directory</div>
-    {# TODO
+    {# TODO gnb5
     build a horizontal filter/sort form with
     name (show as company name but name field should be name)
     country/state (provided)
@@ -29,6 +29,10 @@
             {% if rows and rows|length > 0 %}
             <thead>
                 <tr class="text-capitalize">
+                    {% for col in allowed_columns %}
+                    <th>{{ col|replace('_', ' ') }}</th>
+                    {% endfor %}
+
                     {# generate th tags for each column to display #}
                     {# IMPORTANT use table column names as the headings, replace _ with space via filter #}
 
@@ -36,6 +40,7 @@
                 </tr>
             </thead>
             <tbody>
+
                 {# generate tr with td tags for each piece of data #}
                 {# if the td is for website, display it as a link where the text is "website" and the url is the
                 website url #}
@@ -45,7 +50,22 @@
                 an edit button that passes the company id to company edit
                 a delete button that passes the company id and the request args to the company delete route
                 #}
-
+                {% for row in rows %}
+                <tr>
+                    {% for col in allowed_columns %}
+                    {% if col == 'website' %}
+                    <td><a href="{{ row[col] }}">website</a></td>
+                    {% else %}
+                    <td>{{ row[col] }}</td>
+                    {% endif %}
+                    {% endfor %}
+                    <td>
+                        <a href="{{ url_for('employee.search', company_id=row['id'], company_name=row['name'], **request.args.to_dict()) }}" class="btn btn-info">View</a>
+                        <a href="{{ url_for('company.edit', company_id=row['id']) }}" class="btn btn-warning">Edit</a>
+                        <a href="{{ url_for('company.delete', company_id=row['id'], **request.args.to_dict()) }}" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
             </tbody>
             {% else %}
             <tbody>

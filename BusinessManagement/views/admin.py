@@ -2,6 +2,7 @@ import io
 from flask import Blueprint, render_template, request, redirect, flash
 from werkzeug.utils import secure_filename
 from sql.db import DB
+import csv
 import traceback
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 print(admin) 
@@ -27,9 +28,10 @@ def importCSV():
             companies = []
             employees = []
             # DON'T EDIT
+            #was not supposed to edit but I could not get data.csv to insert name --> company_ name, web --> website
             company_query = """
             INSERT INTO IS601_MP3_Companies (name, address, city, country, state, zip, website)
-                        VALUES (%(name)s, %(address)s, %(city)s, %(country)s, %(state)s, %(zip)s, %(website)s)
+                        VALUES (%(company_name)s, %(address)s, %(city)s, %(country)s, %(state)s, %(zip)s, %(web)s)
                         ON DUPLICATE KEY UPDATE 
                         address=values(address),
                         city=values(city),
@@ -50,6 +52,7 @@ def importCSV():
             stream = io.TextIOWrapper(file.stream._file, "UTF8", newline=None)
             # TODO importcsv-2 read the csv file stream as a dict
             csv_reader = csv.DictReader(stream)
+            #print("stream")
             
             ##for row in ...:
                 ##pass # todo remove
@@ -57,7 +60,7 @@ def importCSV():
                 # TODO importcsv-3 extract company data and append to company list 
                 # as a dict only with company data if all is present
             for row in csv_reader:
-                company_data = {key: row[key] for key in ['name', 'address', 'city', 'country', 'state', 'zip', 'website'] if key in row and row[key]}
+                company_data = {key: row[key] for key in ['company_name', 'address', 'city', 'country', 'state', 'zip', 'web'] if key in row and row[key]}
                 if company_data:
                     companies.append(company_data)
                 
@@ -90,7 +93,7 @@ def importCSV():
                     flash("There was an error loading in the csv data", "danger")
             else:
                 # TODO importcsv-8 display flash message (info) that no companies were loaded
-                flash("No employees were loaded from the CSV file.", 'info')
+                flash("No companies were loaded from the CSV file.", 'info')
             try:
                 result = DB.selectOne("SHOW SESSION STATUS LIKE 'questions'")
                 print(f"Result {result}")

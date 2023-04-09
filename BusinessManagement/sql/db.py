@@ -31,6 +31,8 @@ class DB:
     def __runQuery(op, isMany, queryString, args = None):
         response = None
         #print(f"query {queryString} args {args}")
+        #print(f"Executing query: {queryString}")
+        #print(f"With arguments: {args}")
         try:
             db = DB.getDB()
             cursor = db.cursor(pymysql.cursors.DictCursor)
@@ -39,7 +41,9 @@ class DB:
                 if args is not None and len(args) > 0:
                     if type(args[0]) is dict:
                         args = {k: v for d in args for k, v in d.items()}
-                    status = cursor.execute(queryString, args)
+                        # gnb5 CHANGE: args --> *args
+                        # The splat operator is used to unpack elements from a tuple or a list. In this case, it helps pass the arguments in the correct format.
+                    status = cursor.execute(queryString, *args)
                 else:
                     
                     status = cursor.execute(queryString)
@@ -58,6 +62,7 @@ class DB:
                 else:
                     result = cursor.fetchall()
                     print(f"db.py status {status}")
+                    print(f"db.py response status: {status}")
                     status = True if status >= 0 else False
                     response = DBResponse(status, None, result)
             else:
@@ -85,6 +90,8 @@ class DB:
         
     @staticmethod
     def update(queryString, *args):
+        print(f"Update query: {queryString}")
+        print(f"Update arguments: {args}")
         return DB.__runQuery(CRUD.UPDATE, False, queryString, args)
 
     @staticmethod

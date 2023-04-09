@@ -8,13 +8,21 @@ def search():
     # DO NOT DELETE PROVIDED COMMENTS
     # TODO search-1 retrieve id, name, address, city, country, state, zip, website, employee count as employees for the company
     # don't do SELECT *
+    query = """SELECT id, name, address, city, country, state, zip, website,
+                (SELECT COUNT(*) FROM IS601_MP3_Employees WHERE company_id = IS601_MP3_Companies.id) as employees
+            FROM IS601_MP3_Companies WHERE 1=1"""
+
+    #query = "SELECT id, name, address, city, country, state, zip, website, employee_count as employees FROM IS601_MP3_Companies WHERE 1=1"
     
-    query = "SELECT id, name, address, city, country, state, zip, website, employee_count as employees FROM company WHERE 1=1"
     args = {} # <--- add values to replace %s/%(named)s placeholders
+    #DB.selectAll() method might be expecting a tuple instead of a dictionary for the query parameters
+    # Initialize args_list as an empty list instead of an empty dictionary.
+    #args_list = []
+    
     allowed_columns = ["name", "city", "country", "state"]
     # TODO search-2 get name, country, state, column, order, limit request args
     allowed_orders = ["asc", "desc"]
-    name = request.args.get('name')
+    name = request.args.get('name_company')
     country = request.args.get('country')
     state = request.args.get('state')
     column = request.args.get('column')
@@ -24,15 +32,15 @@ def search():
 
     # TODO search-3 append a LIKE filter for name if provided
     if name:
-        query += " AND name LIKE %(name)s"
+        query += " AND name LIKE %s"
         args['name'] = f"%{name}%"
     # TODO search-4 append an equality filter for country if provided
     if country:
-        query += " AND country = %(country)s"
+        query += " AND country = %s"
         args['country'] = country
     # TODO search-5 append an equality filter for state if provided
     if state:
-        query += " AND state = %(state)s"
+        query += " AND state = %s"
         args['state'] = state
     # TODO search-6 append sorting if column and order are provided and within the allows columsn and allowed order asc,desc
     if column and order and column in allowed_columns and order in allowed_orders:
@@ -42,14 +50,16 @@ def search():
     if limit < 1 or limit > 100:
         flash("Limit should be between 1 and 100", "danger")
     else:
-        query += " LIMIT %(limit)s"
+        query += " LIMIT %s"
+        #args_list.append(limit)
         args["limit"] = limit
 
     # TODO search-8 provide a proper error message if limit isn't a number or if it's out of bounds
     print("query",query)
     print("args", args)
     try:
-        result = DB.selectAll(query, args)
+        #result = DB.selectAll(query, *args_list)
+        result = DB.selectAll(query, tuple(args.values()))
         if result.status:
             rows = result.rows
             print(f"rows {rows}")
@@ -138,7 +148,7 @@ def add():
             try:
                 print("Parameters:", (name, address, city, state, country, zip_code, website))
                 result = DB.insertOne("""
-                INSERT INTO IS601_MP3_Companies (name, address, city, state, country, zipcode, website)
+                INSERT INTO IS601_MP3_Companies (name, address, city, state, country, zip, website)
                 VALUES (%s, %s, %s, %s, %s, %s, %s)
                 """, (name, address, city, state, country, zip_code, website))
                 
@@ -209,6 +219,7 @@ def edit():
     # TODO edit-13 pass the company data to the render template
     return render_template("edit_company.html", ...)
 
+'''
 @company.route("/delete", methods=["GET"])
 def delete():
     # gnb5 implemented 4/7/23
@@ -218,7 +229,8 @@ def delete():
     # TODO delete-4 ensure a flash message shows for successful delete
     # TODO delete-5 for all employees assigned to this company set their company_id to None/null
     # TODO delete-6 if id is missing, flash necessary message and redirect to search
-    company_id = request.args.get("id")
+    company_id = request.args.get("company_id")
+    print("C_id is:", company_id)
 
     if company_id is None:
         flash("Company ID is required", "danger")
@@ -226,14 +238,46 @@ def delete():
     try:
         # Unassign employees from the company
         update_employees_query = """
-        UPDATE employee SET company_id = NULL WHERE company_id = %(company_id)s
+        UPDATE employee SET company_id = NULL WHERE company_id = %s
         """
         update_result = DB.update(update_employees_query, {"company_id": company_id})
         # Delete the company
         delete_query = """
-        DELETE FROM company WHERE id = %(company_id)s
+        DELETE FROM company WHERE id in = %s
         """
         delete_result = DB.delete(delete_query, {"company_id": company_id})
+
+
+        if delete_result.status:
+            flash("Company and its related data have been successfully deleted", "success")
+        else:
+            flash("An error occurred while deleting the company", "danger")
+
+    except Exception as e:
+        flash("An error occurred while deleting the company", "danger")
+
+    return redirect(url_for("company.search"))
+'''
+@company.route("/delete", methods=["GET"])
+def delete():
+    company_id = request.args.get("company_id")
+    print("C_id is:", company_id)
+
+    if company_id is None:
+        flash("Company ID is required", "danger")
+        return redirect(url_for("company.search"))
+    try:
+        # Unassign employees from the company
+        update_employees_query = """
+        UPDATE IS601_MP3_Employees SET company_id = NULL WHERE company_id = %s
+        """
+        update_result = DB.update(update_employees_query, (company_id,))
+        # Delete the company
+        delete_query = """
+        DELETE FROM IS601_MP3_Companies WHERE id = %s
+        """
+        delete_result = DB.delete(delete_query, (company_id,))
+
         if delete_result.status:
             flash("Company and its related data have been successfully deleted", "success")
         else:
