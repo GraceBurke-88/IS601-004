@@ -60,7 +60,6 @@
                     {% endif %}
                     {% endfor %}
                     <td>
-                        <a href="{{ url_for('employee.search', company_id=row['id'], company_name=row['name'], **request.args.to_dict()) }}" class="btn btn-info">View</a>
                         <a href="{{ url_for('company.edit', company_id=row['id']) }}" class="btn btn-warning">Edit</a>
                         <a href="{{ url_for('company.delete', company_id=row['id'], **request.args.to_dict()) }}" class="btn btn-danger">Delete</a>
                     </td>

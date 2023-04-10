@@ -19,7 +19,9 @@ def search():
     # Initialize args_list as an empty list instead of an empty dictionary.
     #args_list = []
     
-    allowed_columns = ["name", "city", "country", "state"]
+    #allowed_columns = ["name", "city", "country", "state"]
+    allowed_columns = ["id", "name", "address", "city", "country", "state", "zip", "website", "employees"]
+
     # TODO search-2 get name, country, state, column, order, limit request args
     allowed_orders = ["asc", "desc"]
     name = request.args.get('name_company')
@@ -162,7 +164,7 @@ def add():
                 flash(str(e), "danger")
 
     return render_template("add_company.html")
-
+'''
 @company.route("/edit", methods=["GET", "POST"])
 def edit():
     # TODO edit-1 request args id is required (flash proper error message)
@@ -218,16 +220,82 @@ def edit():
             flash(str(e), "danger")
     # TODO edit-13 pass the company data to the render template
     return render_template("edit_company.html", ...)
-
 '''
+@company.route("/edit", methods=["GET", "POST"])
+def edit():
+    id = request.args.get('company_id')
+    print(id)
+
+    if not id:
+        flash("Company ID is required", "danger")
+        return redirect(url_for("company.search"))
+
+    if request.method == "POST":
+        data = {"id": id}
+        form_data = request.form.to_dict()
+
+        has_error = False
+
+        if not form_data.get('name'):
+            flash("Name is required", "danger")
+            has_error = True
+        if not form_data.get('address'):
+            flash("Address is required", "danger")
+            has_error = True
+        if not form_data.get('city'):
+            flash("City is required", "danger")
+            has_error = True
+        if not form_data.get('state'):
+            flash("State is required", "danger")
+            has_error = True
+        if not form_data.get('country'):
+            flash("Country is required", "danger")
+            has_error = True
+        if not form_data.get('zip'):
+            flash("Zip code is required", "danger")
+            has_error = True
+
+        data.update(form_data)
+
+        if not has_error:
+            print("The Data:", data)
+            try:
+                result = DB.update("""
+                UPDATE IS601_MP3_Companies
+                SET
+                name = %s,
+                address = %s,
+                city = %s,
+                state = %s,
+                country = %s,
+                zip = %s,
+                website = %s
+                WHERE id = %s
+                """, (form_data.get('name'), form_data.get('address'), form_data.get('city'), form_data.get('state'), form_data.get('country'), form_data.get('zip'), form_data.get('website'), id))
+                
+                if result.status:
+                    flash("Updated record", "success")
+                    return redirect(url_for("company.search"))
+            except Exception as e:
+                print("Exception is:", e)
+                flash("An error occurred while updating the company", "danger")
+
+    row = {}
+    try:
+        result = DB.selectOne("SELECT * FROM IS601_MP3_Companies WHERE id = %s", (id,))
+        if result.status:
+            row = result.row
+    except Exception as e:
+        print(e)
+        flash("An error occurred while retrieving the company", "danger")
+
+    return render_template("edit_company.html", row=row)
+
+
+
 @company.route("/delete", methods=["GET"])
 def delete():
     # gnb5 implemented 4/7/23
-    # TODO delete-1 delete company by id (unallocate any employees see delete-5)
-    # TODO delete-2 redirect to company search
-    # TODO delete-3 pass all argument except id to this route
-    # TODO delete-4 ensure a flash message shows for successful delete
-    # TODO delete-5 for all employees assigned to this company set their company_id to None/null
     # TODO delete-6 if id is missing, flash necessary message and redirect to search
     company_id = request.args.get("company_id")
     print("C_id is:", company_id)
@@ -235,55 +303,30 @@ def delete():
     if company_id is None:
         flash("Company ID is required", "danger")
         return redirect(url_for("company.search"))
+    
     try:
         # Unassign employees from the company
-        update_employees_query = """
-        UPDATE employee SET company_id = NULL WHERE company_id = %s
-        """
-        update_result = DB.update(update_employees_query, {"company_id": company_id})
-        # Delete the company
-        delete_query = """
-        DELETE FROM company WHERE id in = %s
-        """
-        delete_result = DB.delete(delete_query, {"company_id": company_id})
-
-
-        if delete_result.status:
-            flash("Company and its related data have been successfully deleted", "success")
-        else:
-            flash("An error occurred while deleting the company", "danger")
-
-    except Exception as e:
-        flash("An error occurred while deleting the company", "danger")
-
-    return redirect(url_for("company.search"))
-'''
-@company.route("/delete", methods=["GET"])
-def delete():
-    company_id = request.args.get("company_id")
-    print("C_id is:", company_id)
-
-    if company_id is None:
-        flash("Company ID is required", "danger")
-        return redirect(url_for("company.search"))
-    try:
-        # Unassign employees from the company
+        # TODO delete-5 for all employees assigned to this company set their company_id to None/null
         update_employees_query = """
         UPDATE IS601_MP3_Employees SET company_id = NULL WHERE company_id = %s
         """
         update_result = DB.update(update_employees_query, (company_id,))
+
+        # TODO delete-1 delete company by id (unallocate any employees see delete-5)
+        # TODO delete-3 pass all argument except id to this route
         # Delete the company
         delete_query = """
         DELETE FROM IS601_MP3_Companies WHERE id = %s
         """
         delete_result = DB.delete(delete_query, (company_id,))
-
         if delete_result.status:
-            flash("Company and its related data have been successfully deleted", "success")
+            # TODO delete-4 ensure a flash message shows for successful delete
+            flash("Company and related data were successfully deleted", "success")
         else:
             flash("An error occurred while deleting the company", "danger")
 
     except Exception as e:
         flash("An error occurred while deleting the company", "danger")
 
+    # TODO delete-2 redirect to company search
     return redirect(url_for("company.search"))
