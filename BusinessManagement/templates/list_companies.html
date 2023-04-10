@@ -5,7 +5,7 @@
 {% from "sort_filter.html" import sort_filter %}
 <div class="container-fluid">
     <div class="h1 text-center">Company Directory</div>
-    {# TODO gnb5
+    {# TODO gnb5 4/9/23
     build a horizontal filter/sort form with
     name (show as company name but name field should be name)
     country/state (provided)
@@ -18,17 +18,15 @@
         <div class="row">
             <div class="col">
                 <label class="visually-hidden" for="name">Name</label>
-                <input type="text" name="name" id="name" value="{{ request.args.get('name','') }}" placeholder="Name" class="form-control" />
+                <input type="text" class="form-control" name="name" id="name" value="{{ request.args.get('name', '') }}" placeholder="Name"/>
             </div>
     
             {{country_state_selector(layout="horizontal", country=request.args.get('country'), state=request.args.get('state'))}}
-
-
             <div class="col">
                 <label class="visually-hidden" for="limit">Limit</label>
                 <input type="number" class="form-control" id="limit" name="limit" value="{{ request.args.get('limit', 10) }}" placeholder="Limit">
             </div>
-    
+            {{sort_filter(cols=allowed_columns)}}
             <div class="col">
                 <input type="submit" class="btn btn-primary" value="Filter" />
                 <a href="?" class="btn btn-secondary">Reset</a>
@@ -40,7 +38,7 @@
             {% if rows and rows|length > 0 %}
             <thead>
                 <tr class="text-capitalize">
-                    {% for col in allowed_columns %}
+                    {% for col in rows[0].keys() %}
                     <th>{{ col|replace('_', ' ') }}</th>
                     {% endfor %}
 
@@ -63,11 +61,11 @@
                 #}
                 {% for row in rows %}
                 <tr>
-                    {% for col in allowed_columns %}
-                    {% if col == 'website' %}
-                    <td><a href="{{ row[col] }}">website</a></td>
+                    {% for col_name, col_value in row.items() %}
+                    {% if col_name == 'website' %}
+                    <td><a href="{{ col_value }}">website</a></td>
                     {% else %}
-                    <td>{{ row[col] }}</td>
+                    <td>{{ col_value }}</td>
                     {% endif %}
                     {% endfor %}
                     <td>

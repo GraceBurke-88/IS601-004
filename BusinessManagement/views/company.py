@@ -1,169 +1,69 @@
 from flask import Blueprint, redirect, render_template, request, flash, url_for
 from sql.db import DB
 company = Blueprint('company', __name__, url_prefix='/company')
-'''
 @company.route("/search", methods=["GET"])
 def search():
-    rows = []
-    # TODO search-1 retrieve company id as id, name, city, state, country using a LEFT JOIN
-    query = """
-        SELECT companies.id, companies.name, companies.city, companies.state, companies.country
-        FROM IS601_MP3_Companies 
-    """
-
-    print(query)
-    args = {} # <--- add values to replace %s/%(named)s placeholders
-    allowed_columns = ["name", "city", "state", "country"]
-    #print("the query result",query)
-
-    # TODO search-2 get name, city, state, country, column, order, limit from request args
-
-    name = request.args.get("name")
-    #print("name is:",name)
-    city = request.args.get("city")
-    state = request.args.get("state")
-    country = request.args.get("country")
-    column = request.args.get("column")
-    order = request.args.get("order")
-    limit = request.args.get("limit", 10, type=int)
-
-    # TODO search-3 append like filter for name if provided
-    if name:
-        query += " AND companies.name LIKE %s"
-        args["name"] = f"%{name}%"
-
-    # TODO search-4 append like filter for city if provided
-    if city:
-        query += " AND companies.city LIKE %s"
-        args["city"] = f"%{city}%"
-
-    # TODO search-5 append equality filter for state if provided
-    if state:
-        query += " AND companies.state = %s"
-        args["state"] = state
-
-    # TODO search-6 append equality filter for country if provided
-    if country:
-        query += " AND companies.country = %s"
-        args["country"] = country
-
-    # TODO search-7 append sorting if column and order are provided and within the allowed columns and order options (asc, desc)
-    if column in allowed_columns and order in ["asc", "desc"]:
-        query += f" ORDER BY {column} {order}"
-
-    # TODO search-8 append limit (default 10) or limit greater than 1 and less than or equal to 100
-    # TODO search-9 provide a proper error message if limit isn't a number or if it's out of bounds
-
-    try:
-        limit = int(limit)
-        if limit < 1 or limit > 100:
-            flash("Invalid limit value. Please enter a number between 1 and 100.", "warning")
-            raise ValueError     
-    except (TypeError, ValueError):
-        limit = 10
-        flash("Limit should be a number between 1 and 100. Using default limit of 10.", "warning")
-        
-
-    #limit = 10 # TODO change this per the above requirements
-    query += " LIMIT %s"
-    args["limit"] = limit
-    #print("query",query)
-    #print("args", args)
-    try:
-        result = DB.selectAll(query, tuple(args.values()))
-        if result.status:
-            rows = result.rows
-    except Exception as e:
-        # TODO search-10 make message user friendly
-        flash("An error occurred while processing your request. Please try again.", "danger")
-        
-        print(f"Exception: {e}")  # Add this line to print the exception
-
-    # hint: use allowed_columns in template to generate sort dropdown
-    allowed_columns_tuples = [(col, col.replace("_", " ").title()) for col in allowed_columns]
-    return render_template("list_companies.html", rows=rows, allowed_columns=allowed_columns_tuples)
-
-'''
-@company.route("/search", methods=["GET"])
-def search():
-    rows = []
-    # DO NOT DELETE PROVIDED COMMENTS
+    # DO NOT DELETE PROVIDED COMMENTS implemented gnb5 4/9/23
     # TODO search-1 retrieve id, name, address, city, country, state, zip, website, employee count as employees for the company
     # don't do SELECT *
     query = """SELECT id, name, address, city, country, state, zip, website,
                 (SELECT COUNT(*) FROM IS601_MP3_Employees WHERE company_id = IS601_MP3_Companies.id) as employees
             FROM IS601_MP3_Companies WHERE 1=1"""
+    
+    args = []
 
-    #query = "SELECT id, name, address, city, country, state, zip, website, employee_count as employees FROM IS601_MP3_Companies WHERE 1=1"
-    
-    args = {} # <--- add values to replace %s/%(named)s placeholders
-    #DB.selectAll() method might be expecting a tuple instead of a dictionary for the query parameters
-    # Initialize args_list as an empty list instead of an empty dictionary.
-    #args_list = []
-    
     allowed_columns = ["name", "city", "country", "state"]
-    #allowed_columns = ["name","city", "country", "state"]
-    #allowed_columns = [("name", "Name"),("city", "City"),("country", "Country"),("state", "State")]
+    allowed_orders = ["asc", "desc"]
 
+    allowed_columns_tuples = [(col, col.replace('_', ' ')) for col in allowed_columns]
+    allowed_columns_only = [col[0] for col in allowed_columns_tuples]
 
     # TODO search-2 get name, country, state, column, order, limit request args
-    allowed_orders = ["asc", "desc"]
-    name = request.args.get('name_company')
+    name = request.args.get('name')
     country = request.args.get('country')
     state = request.args.get('state')
     column = request.args.get('column')
     order = request.args.get('order')
-    limit = request.args.get('limit', default=10, type=int)
-    # limit = 10 # TODO change this per the above requirements
+    limit = request.args.get('limit', default=10, type=int)     # TODO change this per the above requirements
 
     # TODO search-3 append a LIKE filter for name if provided
     if name:
-        query += " AND name LIKE %(name)s"
-        args['name'] = f"%{name}%"
+        query += " AND name LIKE %s"
+        args.append(f"%{name}%")
     # TODO search-4 append an equality filter for country if provided
     if country:
         query += " AND country = %s"
-        args['country'] = country
+        args.append(country)
     # TODO search-5 append an equality filter for state if provided
     if state:
         query += " AND state = %s"
-        args['state'] = state
-    
+        args.append(state)
     # TODO search-7 append sorting if column and order are provided and within the allowed columns and order options (asc, desc)
     if column in allowed_columns and order in allowed_orders:
         query += f" ORDER BY {column} {order}"
-
-    # TODO search-7 append limit (default 10) or limit greater than 1 and less than or equal to 100
+    # TODO search-8 provide a proper error message if limit isn't a number or if it's out of bounds
     if limit < 1 or limit > 100:
         flash("Limit should be between 1 and 100", "danger")
     else:
         query += " LIMIT %s"
-        #args_list.append(limit)
-        args["limit"] = limit
+        args.append(limit)
+        print(query)
+        print(args)
 
-    # TODO search-8 provide a proper error message if limit isn't a number or if it's out of bounds
-    print("query",query)
-    print("args", args)
     try:
-        #result = DB.selectAll(query, *args_list)
-        result = DB.selectAll(query, tuple(args.values()))
+        result = DB.selectAll(query, tuple(args))
         if result.status:
             rows = result.rows
-            print(f"rows {rows}")
     except Exception as e:
-        flash("An error occurred while searching for companies.", "danger")
         # TODO search-9 make message user friendly
+        flash("An error occurred while searching for companies.", "danger")
         flash(str(e), "danger")
 
     # hint: use allowed_columns in template to generate sort dropdown
     # hint2: convert allowed_columns into a list of tuples representing (value, label)
     # do this prior to passing to render_template, but not before otherwise it can break validation
-    
-    #columns_tuples = [(col, col.capitalize()) for col in allowed_columns]
-    #allowed_columns_tuples = [(col, col) for col in allowed_columns]
-    #return render_template("list_companies.html", rows=rows, allowed_columns=allowed_columns_tuples)
-    #allowed_columns_tuples = [(col, col.replace("_", " ").title()) for col in allowed_columns]
-    return render_template("list_companies.html", rows=rows, allowed_columns=allowed_columns)
+    return render_template("list_companies.html", rows=rows, allowed_columns=allowed_columns_tuples)
+    #return render_template("list_companies.html", rows=rows, allowed_columns=allowed_columns)
 
 @company.route("/add", methods=["GET","POST"])
 def add():
@@ -250,63 +150,7 @@ def add():
                 flash(str(e), "danger")
 
     return render_template("add_company.html")
-'''
-@company.route("/edit", methods=["GET", "POST"])
-def edit():
-    # TODO edit-1 request args id is required (flash proper error message)
-    id = False
-    if not id: # TODO update this for TODO edit-1
-        pass
-    else:
-        if request.method == "POST":
-            data = {"id": id} # use this as needed, can convert to tuple if necessary
-            # TODO edit-1 retrieve form data for name, address, city, state, country, zip, website
-            # TODO edit-2 name is required (flash proper error message)
-            # TODO edit-3 address is required (flash proper error message)
-            # TODO edit-4 city is required (flash proper error message)
-            # TODO edit-5 state is required (flash proper error message)
-            # TODO edit-5a state should be a valid state mentioned in pycountry for the selected state
-            # hint see geography.py and pycountry documentation
-            # TODO edit-6 country is required (flash proper error message)
-            # TODO edit-6a country should be a valid country mentioned in pycountry
-            # hint see geography.py and pycountry documentation
-            # TODO edit-7 website is not required
-            # TODO edit-8 zipcode is required (flash proper error message)
-            
-            # note: call zip variable zipcode as zip is a built in function it could lead to issues
-            # populate data dict with mappings
-            has_error = False # use this to control whether or not an insert occurs
 
-            
-            if not has_error:
-                try:
-                    # TODO edit-9 fill in proper update query
-                    # name, address, city, state, country, zip, website
-                    result = DB.update("""
-                    UPDATE ...
-                    SET
-                    ...
-                    """, data)
-                    if result.status:
-                        print("updated record")
-                        flash("Updated record", "success")
-                except Exception as e:
-                    # TODO edit-10 make this user-friendly
-                    print(f"{e}")
-                    flash(str(e), "danger")
-        row = {}
-        try:
-            # TODO edit-11 fetch the updated data
-            result = DB.selectOne("SELECT ... FROM ... WHERE ...", id)
-            if result.status:
-                row = result.row
-                
-        except Exception as e:
-            # TODO edit-12 make this user-friendly
-            flash(str(e), "danger")
-    # TODO edit-13 pass the company data to the render template
-    return render_template("edit_company.html", ...)
-'''
 @company.route("/edit", methods=["GET", "POST"])
 def edit():
     id = request.args.get('company_id')
