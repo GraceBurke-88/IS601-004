@@ -12,14 +12,25 @@
     sort/order (using allowed_columns and provided partial template)
     limit (default 10)
     ensure all fields prefill with request arg data if provided
+    removed             sort_filter(cols=allowed_columns)
     #}
     <form method="GET">
         <div class="row">
-            {{country_state_selector(layout="horizontal")}}
-            {{sort_filter(cols=[])}}
+            <div class="col">
+                <label class="visually-hidden" for="name">Name</label>
+                <input type="text" name="name" id="name" value="{{ request.args.get('name','') }}" placeholder="Name" class="form-control" />
+            </div>
+    
+            {{country_state_selector(layout="horizontal", country=request.args.get('country'), state=request.args.get('state'))}}
+
+
+            <div class="col">
+                <label class="visually-hidden" for="limit">Limit</label>
+                <input type="number" class="form-control" id="limit" name="limit" value="{{ request.args.get('limit', 10) }}" placeholder="Limit">
+            </div>
+    
             <div class="col">
                 <input type="submit" class="btn btn-primary" value="Filter" />
-            <div class="col">
                 <a href="?" class="btn btn-secondary">Reset</a>
             </div>
         </div>

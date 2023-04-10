@@ -1,7 +1,89 @@
 from flask import Blueprint, redirect, render_template, request, flash, url_for
 from sql.db import DB
 company = Blueprint('company', __name__, url_prefix='/company')
+'''
+@company.route("/search", methods=["GET"])
+def search():
+    rows = []
+    # TODO search-1 retrieve company id as id, name, city, state, country using a LEFT JOIN
+    query = """
+        SELECT companies.id, companies.name, companies.city, companies.state, companies.country
+        FROM IS601_MP3_Companies 
+    """
 
+    print(query)
+    args = {} # <--- add values to replace %s/%(named)s placeholders
+    allowed_columns = ["name", "city", "state", "country"]
+    #print("the query result",query)
+
+    # TODO search-2 get name, city, state, country, column, order, limit from request args
+
+    name = request.args.get("name")
+    #print("name is:",name)
+    city = request.args.get("city")
+    state = request.args.get("state")
+    country = request.args.get("country")
+    column = request.args.get("column")
+    order = request.args.get("order")
+    limit = request.args.get("limit", 10, type=int)
+
+    # TODO search-3 append like filter for name if provided
+    if name:
+        query += " AND companies.name LIKE %s"
+        args["name"] = f"%{name}%"
+
+    # TODO search-4 append like filter for city if provided
+    if city:
+        query += " AND companies.city LIKE %s"
+        args["city"] = f"%{city}%"
+
+    # TODO search-5 append equality filter for state if provided
+    if state:
+        query += " AND companies.state = %s"
+        args["state"] = state
+
+    # TODO search-6 append equality filter for country if provided
+    if country:
+        query += " AND companies.country = %s"
+        args["country"] = country
+
+    # TODO search-7 append sorting if column and order are provided and within the allowed columns and order options (asc, desc)
+    if column in allowed_columns and order in ["asc", "desc"]:
+        query += f" ORDER BY {column} {order}"
+
+    # TODO search-8 append limit (default 10) or limit greater than 1 and less than or equal to 100
+    # TODO search-9 provide a proper error message if limit isn't a number or if it's out of bounds
+
+    try:
+        limit = int(limit)
+        if limit < 1 or limit > 100:
+            flash("Invalid limit value. Please enter a number between 1 and 100.", "warning")
+            raise ValueError     
+    except (TypeError, ValueError):
+        limit = 10
+        flash("Limit should be a number between 1 and 100. Using default limit of 10.", "warning")
+        
+
+    #limit = 10 # TODO change this per the above requirements
+    query += " LIMIT %s"
+    args["limit"] = limit
+    #print("query",query)
+    #print("args", args)
+    try:
+        result = DB.selectAll(query, tuple(args.values()))
+        if result.status:
+            rows = result.rows
+    except Exception as e:
+        # TODO search-10 make message user friendly
+        flash("An error occurred while processing your request. Please try again.", "danger")
+        
+        print(f"Exception: {e}")  # Add this line to print the exception
+
+    # hint: use allowed_columns in template to generate sort dropdown
+    allowed_columns_tuples = [(col, col.replace("_", " ").title()) for col in allowed_columns]
+    return render_template("list_companies.html", rows=rows, allowed_columns=allowed_columns_tuples)
+
+'''
 @company.route("/search", methods=["GET"])
 def search():
     rows = []
@@ -19,8 +101,10 @@ def search():
     # Initialize args_list as an empty list instead of an empty dictionary.
     #args_list = []
     
-    #allowed_columns = ["name", "city", "country", "state"]
-    allowed_columns = ["id", "name", "address", "city", "country", "state", "zip", "website", "employees"]
+    allowed_columns = ["name", "city", "country", "state"]
+    #allowed_columns = ["name","city", "country", "state"]
+    #allowed_columns = [("name", "Name"),("city", "City"),("country", "Country"),("state", "State")]
+
 
     # TODO search-2 get name, country, state, column, order, limit request args
     allowed_orders = ["asc", "desc"]
@@ -34,7 +118,7 @@ def search():
 
     # TODO search-3 append a LIKE filter for name if provided
     if name:
-        query += " AND name LIKE %s"
+        query += " AND name LIKE %(name)s"
         args['name'] = f"%{name}%"
     # TODO search-4 append an equality filter for country if provided
     if country:
@@ -44,8 +128,9 @@ def search():
     if state:
         query += " AND state = %s"
         args['state'] = state
-    # TODO search-6 append sorting if column and order are provided and within the allows columsn and allowed order asc,desc
-    if column and order and column in allowed_columns and order in allowed_orders:
+    
+    # TODO search-7 append sorting if column and order are provided and within the allowed columns and order options (asc, desc)
+    if column in allowed_columns and order in allowed_orders:
         query += f" ORDER BY {column} {order}"
 
     # TODO search-7 append limit (default 10) or limit greater than 1 and less than or equal to 100
@@ -75,8 +160,9 @@ def search():
     # do this prior to passing to render_template, but not before otherwise it can break validation
     
     #columns_tuples = [(col, col.capitalize()) for col in allowed_columns]
-    
-    #return render_template("list_companies.html", rows=rows, allowed_columns=columns_tuples)
+    #allowed_columns_tuples = [(col, col) for col in allowed_columns]
+    #return render_template("list_companies.html", rows=rows, allowed_columns=allowed_columns_tuples)
+    #allowed_columns_tuples = [(col, col.replace("_", " ").title()) for col in allowed_columns]
     return render_template("list_companies.html", rows=rows, allowed_columns=allowed_columns)
 
 @company.route("/add", methods=["GET","POST"])
