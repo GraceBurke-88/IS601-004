@@ -1,0 +1,94 @@
+{% extends "layout.html" %}
+{% block title %}Employee Directory{% endblock %}
+{% block content %}
+{% from "company_dropdown.html" import company_dropdown %}
+{% from "sort_filter.html" import sort_filter %}
+<div class="container-fluid">
+    <div class="h1 text-center">{{request.args.get("company_name","")}} Employee Directory</div>
+    <form method="GET">
+        {# TODO gnb5 4/9/23
+        build a horizontal filter/sort form with
+        first_name (show as first name, but name should be fn)
+        last_name (show as last name, but name should be ln)
+        email (validate as text, not email, so partial match works)
+        company (provided) (name is company value is the id)
+        sort/order (using allowed_columns and provided partial template)
+        limit (default 10)
+        ensure all fields prefill with request arg data if provided
+        #}
+
+        <div class="row">
+            <div class="col">
+                <label class="visually-hidden" for="fn">First Name</label>
+                <input type="text" class="form-control" id="fn" name="fn" value="{{ request.args.get('fn', '') }}" placeholder="First Name">
+            </div>
+            <div class="col">
+                <label class="visually-hidden" for="ln">Last Name</label>
+                <input type="text" class="form-control" id="ln" name="ln" value="{{ request.args.get('ln', '') }}" placeholder="Last Name">
+            </div>
+            <div class="col">
+                <label class="visually-hidden" for="email">Email</label>
+                <input type="text" class="form-control" id="email" name="email" value="{{ request.args.get('email', '') }}" placeholder="Email">
+            </div>
+            <div class="col">
+                <label class="visually-hidden" for="company">Company</label>
+                {{company_dropdown(request.args.get("company"))}}
+            </div>
+            {{sort_filter(cols=allowed_columns)}}
+            <div class="col">
+                <label class="visually-hidden" for="limit">Limit</label>
+                <input type="number" class="form-control" id="limit" name="limit" value="{{ request.args.get('limit', 10) }}" placeholder="Limit">
+            </div>
+            <div class="col">
+                <input type="submit" class="btn btn-primary" value="Filter" />
+            </div>
+            <div class="col">
+                <a href="?" class="btn btn-secondary">Reset</a>
+            </div>
+        </div>
+    </form>
+    <table class="table">
+        {% if rows and rows|length > 0 %}
+        <thead>
+            <tr class="text-capitalize">
+                {% for col in rows[0].keys() %}
+                <th>{{ col|replace('_', ' ') }}</th>
+            {% endfor %}
+                
+                {# generate th tags for each column to display #}
+                {# IMPORTANT use table column names as the headings, replace _ with space via filter #}
+
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {# generate tr with td tags for each piece of data #}
+            {# in the last column add the following
+            an edit button that passes the employee id to employee edit
+            a delete button that passes the employee id and the request args to the employee delete route
+            #}
+            {% for row in rows %}
+                <tr>
+                    {% for col in row.values() %}
+                        <td>{{ col }}</td>
+                    {% endfor %}
+                    <td>
+                        <a href="{{ url_for('employee.delete', id=row['id'], **request.args) }}" class="btn btn-sm btn-danger">Delete</a>
+                        <a href="{{ url_for('employee.edit', id=row['id']) }}" class="btn btn-sm btn-primary">Edit</a>
+                        
+                    </td>
+                </tr>
+            {% endfor %}
+
+        </tbody>
+        {% else %}
+        <tbody>
+            <tr>
+                <td>hello</td>
+                <td colspan="100%">No results to show</td>
+            </tr>
+        </tbody>
+        {% endif %}
+    </table>
+</div>
+{% endblock %}
