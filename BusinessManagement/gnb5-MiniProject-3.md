@@ -1,6 +1,6 @@
 <table><tr><td> <em>Assignment: </em> IS601 Mini Project 3  Business Management</td></tr>
 <tr><td> <em>Student: </em> Grace Burke (gnb5)</td></tr>
-<tr><td> <em>Generated: </em> 4/10/2023 9:33:43 PM</td></tr>
+<tr><td> <em>Generated: </em> 4/10/2023 9:52:04 PM</td></tr>
 <tr><td> <em>Grading Link: </em> <a rel="noreferrer noopener" href="https://learn.ethereallab.app/homework/IS601-004-S23/is601-mini-project-3-business-management/grade/gnb5" target="_blank">Grading</a></td></tr></table>
 <table><tr><td> <em>Instructions: </em> <div>Initial Preperation:</div><div><ol><li>Create two new dynos/VMs in Heroku:</li><ol><li>is601-ucid-mp3-dev</li><li>is601-ucid-mp3-prod</li></ol><li>Configure the heroku config vars and github secrets similar to how dev/prod were setup</li><li>Create two new secrets for github and set the values per the machine names in step 1</li><ol><li>HEROKU_APP_MP3_DEV</li><li>HEROKU_APP_MP3_PROD</li></ol><li>Duplicate your dev/prod yml files and have it listen to the mp3-dev and mp3-prod branches respectively</li><ol><li>Make sure you refer to the proper app secrets from step 3</li><li>You can merge these into regular dev/prod later but you'll want your final project to deploy over it (overwrite) on the normal dev/prod dynos/VM</li></ol><li>You can add this HW branch to the dev yml to test your deployments prior to the pull request to dev from step 4</li></ol></div><div><br></div><div><br></div><ol><li>checkout dev and pull any latest changes</li><li>Create a branch called mp3-prod and immediately push it</li><li>Create a branch called mp3-dev and immediately push it</li><li>Create a branch called MiniProject-3</li><li>Add all the baseline files first under a folder called BusinessManagement (included below)</li><li>Don't forget to copy your .env file from flask_sample into BusinessManagement</li><li>source the venv and pip install the requirements.txt</li><li>Run the BusinessManagement/sql/init_db.py script</li><li><b>Immediate add/commit/push to github</b></li><li>Open a pull request to mp3-dev and keep it open until you're done adding the submission file</li><li>Make your code changes per the following requirements</li><ol><li>Important: run the test files indiviudally as you're working/testing to save on query quota usage</li><li>&nbsp;pytest BusinessManagement/test/name_of_test.py -rA</li></ol><li>Add/commit periodically (recommended after you implement a TODO item or checlist item and add a related commit message for clarity)<br></li><ol><li>Do not delete any provided comments</li></ol><li>Anywhere relevant add your ucid and the date you added the code (best to do this as you go)</li><li>You'll be capturing website screenshots from dev and code snippet screenshots (ensure you upload these properly as pull request comments to the pull request from step 10</li><ol><li>Note: You don't need separate screenshots for each checklist item, when possible it's recommended to try to capture multiple items together and reuse the image</li><li>Ensure all screenshots are properly captioned in the deliverable section so it's clear what part you're trying to show</li></ol><li>Once done, copy the markdown or download the md file and save it under the BusinessManagement folder</li><li>Do a final add/commit/push</li><li>Verify everything looks ok in the pull request</li><li>Merge the pull request</li><li>Make a new pull request from mp3-dev to mp3-prod and merge it</li><ol><li>If you want to keep original dev/prod up to date you can merge the changes into those, but they will cause a deploy to occur for each so be mindful</li></ol><li>Navigate to the submission file under the BusinessManagement folder from mp3-prod</li><li>Copy the github url to the exact file and submit it to Canvas</li></ol><div>You'll be implementing a basic Business Management site.</div><div>There will be some provided files fully working as-is and some skeleton files you'll need to fill in.</div><div>The files you need to fill in will have TODO items or comments mentioning what's expected.</div><div>Some files will have "DO NOT EDIT" mentioned, please don't edit these. If there's a doubt about any of them ask.</div><div>There are provided test case files too that all must be passing for full credit. Do not edit these test case files.</div><div>If a test case isn't possible to complete, capture the failed test case locally via `pytest BusinessManagement -rA` first, then you can rename the function to `off_original_name`.</div><div>The site will handle CRUD operations for Companies and Employees as well as allowing import of Company/Employee data via a csv file.</div><div>Note: db.py has been updated to use pymysql instead of mysql-connector-python to aid in easier queries.</div><div><br></div><div>Baseline files:&nbsp;<a href="https://github.com/MattToegel/IS601/tree/F23-MiniProject-3">https://github.com/MattToegel/IS601/tree/F23-MiniProject-3</a>&nbsp;</div><div>May want to download branch as a zip, then copy/paste the files into your repo (if/when you do, please immediately do a git add/commit to record the baseline items)</div><div><br></div><div>Provided files you don't need to edit:</div><div><ul><li>000_create_table_companies.sql</li><li>001_create_table_employees.sql</li><li>db.py</li><li>init_db.py</li><li>flash.html</li><li>company_dropdown.html</li><li>country_state_selector.html</li><li>upload.html</li><li>sort_filter.html</li><li>all test files</li><li>geography.py</li><li>__init__.py (remains empty)</li><li>Dockerfile</li><li>main.py</li><li>index.py</li></ul><div>All other files likely have requirements to fill in.</div></div><div><br></div></td></tr></table>
 <table><tr><td> <em>Deliverable 1: </em> Identity Edits and Setup </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707773-e6aef7cb-d5b2-4053-bbb1-b09fc609041e.png"></td></tr>
@@ -218,14 +218,43 @@
 </td></tr>
 </table></td></tr>
 </table></td></tr>
-<table><tr><td> <em>Deliverable 7: </em> List/Search Comapny </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707795-a9c94a71-7871-4572-bfae-ad636f8f8474.png"></td></tr>
+<table><tr><td> <em>Deliverable 7: </em> List/Search Comapny </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707773-e6aef7cb-d5b2-4053-bbb1-b09fc609041e.png"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Screenshots of code for /search route of company</td></tr>
-<tr><td><table><tr><td>Missing Image</td></tr>
-<tr><td> <em>Caption:</em> (missing)</td></tr>
+<tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/70772404/231032977-1c5980c9-8006-4513-a6bd-5d827274404a.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>SELECT query should fetch id, name, address, city, country, state, zip, website, employee<br>count (as employee) for the company (likely a sub-query is needed)<br></p>
+</td></tr>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/70772404/231033026-35ab66e9-10d9-4737-a605-6d70b049853d.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Check request args for name, country, state, column, order, limit<br></p>
+</td></tr>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/70772404/231033085-0c5eaa51-0cbe-4c8e-80b4-ed1c8034ef53.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>append a LIKE filter for name if provided; should have proper wildcards, append<br>an equality filter for country if provided, 1	append an equality filter for state<br>if provided<br></p>
+</td></tr>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/70772404/231033140-4b0befdb-fc02-4b54-a714-901c7beac4e7.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>append sorting if column and order are provided and within the allows columsn<br>and allowed order asc,desc allowed_columns = [&quot;name&quot;, &quot;city&quot;, &quot;country&quot;, &quot;state&quot;]<br></p>
+</td></tr>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/70772404/231033202-da542a86-ad9d-43e0-861d-f0a28b0eee9f.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>append limit (default 10) or limit greater than or equal to 1 and<br>less than or equal to 100 (continues in screenshot below), provide a proper<br>error message if limit isn&#39;t a number or if it&#39;s out of bounds<br></p>
+</td></tr>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/70772404/231033292-16407043-9664-4870-9d00-32c68da5e6b6.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Except block should have a user friendly message flashed and a print() of<br>the exception<br></p>
+</td></tr>
 </table></td></tr>
 <tr><td> <em>Sub-Task 2: </em> Screenshots of website for search company</td></tr>
-<tr><td><table><tr><td>Missing Image</td></tr>
-<tr><td> <em>Caption:</em> (missing)</td></tr>
+<tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/70772404/231034225-e0a49adc-8dba-46c7-82dc-25a9c9fcdc1c.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Show results with name filter applied; don&#39;t combine filters<br></p>
+</td></tr>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/70772404/231034315-cd46975f-fe54-431b-b045-d0751067960d.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Show results with country filter applied; don&#39;t combine filters<br></p>
+</td></tr>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/70772404/231034382-07f45e09-966e-47af-a6e4-63f14c92d06b.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Show results with state filter applied; don&#39;t combine filters<br></p>
+</td></tr>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/70772404/231034477-60a7b3a2-43e9-4172-b7d0-fda6d6ec2d61.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Show one asc filter applied (clearly label which column was chosen: NAME)<br></p>
+</td></tr>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/70772404/231034507-2985e4c1-85ff-44b0-bea6-0c73b36ce4b8.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Show one desc filter applied (clearly label which column was chosen:Name)<br></p>
+</td></tr>
 </table></td></tr>
 </table></td></tr>
 <table><tr><td> <em>Deliverable 8: </em> Edit Company </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707773-e6aef7cb-d5b2-4053-bbb1-b09fc609041e.png"></td></tr>

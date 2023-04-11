@@ -3,6 +3,7 @@ from sql.db import DB
 company = Blueprint('company', __name__, url_prefix='/company')
 @company.route("/search", methods=["GET"])
 def search():
+    # implemented gnb5 3/7/23
     # DO NOT DELETE PROVIDED COMMENTS implemented gnb5 4/9/23
     # TODO search-1 retrieve id, name, address, city, country, state, zip, website, employee count as employees for the company
     # don't do SELECT *
@@ -16,6 +17,7 @@ def search():
     allowed_columns_tuples = [(col, col.replace('_', ' ')) for col in allowed_columns]
     #allowed_columns_only = [col[0] for col in allowed_columns_tuples]
 
+    # implemented gnb5 3/7/23
     # TODO search-2 get name, country, state, column, order, limit request args
     name = request.args.get('name')
     country = request.args.get('country')
@@ -24,6 +26,7 @@ def search():
     order = request.args.get('order')
     limit = request.args.get('limit', default=10, type=int)     # TODO change this per the above requirements
 
+    # implemented gnb5 3/7/23 
     # TODO search-3 append a LIKE filter for name if provided
     if name:
         query += " AND name LIKE %s"
@@ -36,9 +39,13 @@ def search():
     if state:
         query += " AND state = %s"
         args.append(state)
+
+    # implemented gnb5 3/7/23 
     # TODO search-7 append sorting if column and order are provided and within the allowed columns and order options (asc, desc)
     if column in allowed_columns and order in allowed_orders:
         query += f" ORDER BY {column} {order}"
+    
+    # implemented gnb5 3/7/23 
     # TODO search-8 provide a proper error message if limit isn't a number or if it's out of bounds
     if limit < 1 or limit > 100:
         flash("Limit should be between 1 and 100", "danger")
