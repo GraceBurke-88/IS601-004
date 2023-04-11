@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block title %}Edit Company{% endblock %}
+{% block content %}
+{% from "country_state_selector.html" import country_state_selector %}
+
+
+<div class="container">
+    <h1 class="my-4">Edit Company</h1>
+
+    <form method="POST">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="name">Name (required)</label>
+                    <input type="text" class="form-control" id="name" name="name" value="{{ row.name }}" required>
+                </div>
+            </br>
+
+                <div class="form-group">
+                    <label for="address">Address (required)</label>
+                    <input type="text" class="form-control" id="address" name="address" value="{{ row.address }}" required>
+                </div>
+            </br>
+
+                <div class="form-group">
+                    <label for="city">City (required)</label>
+                    <input type="text" class="form-control" id="city" name="city" value="{{ row.city }}" required>
+                </div>
+            </br>
+                <div class="form-group">
+                    {{country_state_selector(country=row.country, state=row.state)}}
+                </div>
+            </br>
+                <div class="form-group">
+                    <label for="zip">Zip (required)</label>
+                    <input type="text" class="form-control" id="zip" name="zip" value="{{ row.zip }}" required>
+                </div>
+            </br>
+                <div class="form-group">
+                    <label for="website">Website</label>
+                    <input type="url" class="form-control" id="website" name="website" value="{{ row.website }}">
+                </div>
+            </br>
+                <input type="submit" class="btn btn-primary" value="Save Company" />
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
