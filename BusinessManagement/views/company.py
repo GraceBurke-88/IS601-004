@@ -11,12 +11,10 @@ def search():
             FROM IS601_MP3_Companies WHERE 1=1"""
     
     args = []
-
     allowed_columns = ["name", "city", "country", "state"]
     allowed_orders = ["asc", "desc"]
-
     allowed_columns_tuples = [(col, col.replace('_', ' ')) for col in allowed_columns]
-    allowed_columns_only = [col[0] for col in allowed_columns_tuples]
+    #allowed_columns_only = [col[0] for col in allowed_columns_tuples]
 
     # TODO search-2 get name, country, state, column, order, limit request args
     name = request.args.get('name')
@@ -68,6 +66,7 @@ def search():
 @company.route("/add", methods=["GET","POST"])
 def add():
     if request.method == "POST":
+        #implemented gnb5 4/9/23
         # TODO add-1 retrieve form data for name, address, city, state, country, zip, website
         name = request.form.get("name")
         address = request.form.get("address")
@@ -104,7 +103,7 @@ def add():
                 has_error = True
             
             '''
-
+        #implemented gnb5 4/9/23
         # TODO add-6 country is required (flash proper error message)
         # TODO add-6a country should be a valid country mentioned in pycountry
         # hint see geography.py and pycountry documentation
@@ -123,6 +122,7 @@ def add():
             flash("No website", "danger")
             has_error = False
 
+        #implemented gnb5 4/9/23
         # TODO add-8 zipcode is required (flash proper error message)
         if not zip_code:
             flash("Zip code is required", "danger")
@@ -131,7 +131,7 @@ def add():
 
         has_error = False # use this to control whether or not an insert occurs
         
-
+        #implemented gnb5 4/9/23
         if not has_error:
             try:
                 print("Parameters:", (name, address, city, state, country, zip_code, website))
@@ -153,43 +153,62 @@ def add():
 
 @company.route("/edit", methods=["GET", "POST"])
 def edit():
+    #implemented gnb5 4/9/23
+    # TODO edit-1 request args id is required (flash proper error message
     id = request.args.get('company_id')
     print(id)
 
-    if not id:
+    if not id: # TODO update this for TODO edit-1
         flash("Company ID is required", "danger")
         return redirect(url_for("company.search"))
 
     if request.method == "POST":
-        data = {"id": id}
+        data = {"id": id} # use this as needed, can convert to tuple if necessary
         form_data = request.form.to_dict()
 
-        has_error = False
+        #implemented gnb5 4/9/23
+        has_error = False # use this to control whether or not an insert occurs
+        # TODO edit-1 retrieve form data for name, address, city, state, country, zip, website
 
+        # TODO edit-2 name is required (flash proper error message)
         if not form_data.get('name'):
             flash("Name is required", "danger")
             has_error = True
+        # TODO edit-3 address is required (flash proper error message)
         if not form_data.get('address'):
             flash("Address is required", "danger")
             has_error = True
+        # TODO edit-4 city is required (flash proper error message)
         if not form_data.get('city'):
             flash("City is required", "danger")
             has_error = True
+        # TODO edit-5 state is required (flash proper error message)
+        # TODO edit-5a state should be a valid state mentioned in pycountry for the selected state
+        # hint see geography.py and pycountry documentation
         if not form_data.get('state'):
             flash("State is required", "danger")
             has_error = True
+        # TODO edit-6 country is required (flash proper error message
+        # TODO edit-6a country should be a valid country mentioned in pycountry
+        # hint see geography.py and pycountry documentation
         if not form_data.get('country'):
             flash("Country is required", "danger")
             has_error = True
+        # TODO edit-8 zipcode is required (flash proper error message)
+        # note: call zip variable zipcode as zip is a built in function it could lead to issues
+            # populate data dict with mappings
         if not form_data.get('zip'):
             flash("Zip code is required", "danger")
             has_error = True
 
+        # TODO edit-7 website is not required
         data.update(form_data)
 
         if not has_error:
             print("The Data:", data)
             try:
+                # TODO edit-9 fill in proper update query
+                    # name, address, city, state, country, zip, website
                 result = DB.update("""
                 UPDATE IS601_MP3_Companies
                 SET
@@ -208,17 +227,20 @@ def edit():
                     return redirect(url_for("company.search"))
             except Exception as e:
                 print("Exception is:", e)
+                # TODO edit-10 make this user-friendly
                 flash("An error occurred while updating the company", "danger")
 
     row = {}
     try:
+        # TODO edit-11 fetch the updated data
         result = DB.selectOne("SELECT * FROM IS601_MP3_Companies WHERE id = %s", (id,))
         if result.status:
             row = result.row
     except Exception as e:
+        # TODO edit-12 make this user-friendly
         print(e)
         flash("An error occurred while retrieving the company", "danger")
-
+    # TODO edit-13 pass the company data to the render template
     return render_template("edit_company.html", row=row)
 
 

@@ -7,6 +7,7 @@ employee = Blueprint('employee', __name__, url_prefix='/employee')
 @employee.route("/search", methods=["GET"])
 def search():
     rows = []
+    # gnb5 added 4/9/23
     # DO NOT DELETE PROVIDED COMMENTS
     # TODO search-1 retrieve employee id as id, first_name, last_name, email, company_id, company_name using a LEFT JOIN
     query = """SELECT employees.id, employees.first_name, employees.last_name, employees.email, companies.id as company_id, companies.name as company_name
@@ -16,7 +17,7 @@ def search():
     #print("the query result",query)
 
     # TODO search-2 get fn, ln, email, company, column, order, limit from request args
-
+    # gnb5 added 4/9/23
     fn = request.args.get("fn")
     #print("first name is:",fn)
     ln = request.args.get("ln")
@@ -26,6 +27,7 @@ def search():
     order = request.args.get("order")
     limit = request.args.get("limit", 10, type=int)
 
+    # gnb5 added 4/9/23
     # TODO search-3 append like filter for first_name if provided
     if fn:
         query += " AND employees.first_name LIKE %s"
@@ -47,13 +49,14 @@ def search():
         query += " AND employees.company_id = %s"
         args["company"] = company
 
+    # gnb5 added 4/9/23
     # TODO search-7 append sorting if column and order are provided and within the allowed columns and order options (asc, desc)
     if column in allowed_columns and order in ["asc", "desc"]:
         query += f" ORDER BY {column} {order}"
 
     # TODO search-8 append limit (default 10) or limit greater than 1 and less than or equal to 100
     # TODO search-9 provide a proper error message if limit isn't a number or if it's out of bounds
-
+    # gnb5 added 4/9/23
     try:
         limit = int(limit)
         if limit < 1 or limit > 100:
@@ -63,7 +66,7 @@ def search():
         limit = 10
         flash("Limit should be a number between 1 and 100. Using default limit of 10.", "warning")
         
-
+    # gnb5 added 4/9/23
     #limit = 10 # TODO change this per the above requirements
     query += " LIMIT %s"
     args["limit"] = limit
@@ -89,6 +92,7 @@ def search():
 @employee.route("/add", methods=["GET","POST"])
 def add():
     if request.method == "POST":
+        # gnb5 added 4/9/23
         # TODO add-1 retrieve form data for first_name, last_name, company, email
 
         first_name = request.form.get("first_name", "").strip()
@@ -100,6 +104,7 @@ def add():
         email = request.form.get("email", "").strip()
         #print(email)
 
+        # gnb5 added 4/9/23
         # TODO add-2 first_name is required (flash proper error message)
         # TODO add-3 last_name is required (flash proper error message)
         # TODO add-4 company (may be None)
@@ -159,7 +164,7 @@ def edit():
     
     else:
         if request.method == "POST":
-            
+            # gnb5 added 4/9/23
             # TODO edit-1 retrieve form data for first_name, last_name, company, email
             first_name = request.form.get("first_name", "").strip()
             print(first_name)
@@ -169,6 +174,7 @@ def edit():
             print("company",company)
             email = request.form.get("email", "").strip()
             print(email)
+            # gnb5 added 4/9/23
             # TODO edit-2 first_name is required (flash proper error message)
             # TODO edit-3 last_name is required (flash proper error message)
             # TODO edit-4 company (may be None)
@@ -190,9 +196,10 @@ def edit():
             
             if not has_error:
                 try:
+                    # gnb5 added 4/9/23
                     # TODO edit-6 fill in proper update query
-                    print("Before updating...")  # Add this line
-                    print("parameters:", first_name, last_name, email, company, id)
+                    #print("Before updating...")  # Add this line
+                    #print("parameters:", first_name, last_name, email, company, id)
 
                     result = DB.update("""
                     UPDATE IS601_MP3_Employees SET
@@ -200,8 +207,8 @@ def edit():
                     WHERE id=%s
                     """, (first_name, last_name, email, company, id))
 
-                    print("After updating...")  # Add this line
-                    print(f"Update result: {result}")  # Add this line
+                    #print("After updating...")  # Add this line
+                    #print(f"Update result: {result}")  # Add this line
                     if result.status:
                         flash("Updated record", "success")
                 except Exception as e:
@@ -211,6 +218,7 @@ def edit():
 
         row = {}
         try:
+            # gnb5 added 4/9/23
             # TODO edit-8 fetch the updated data 
             result = DB.selectOne("""
             SELECT e.id, e.first_name, e.last_name, e.email, e.company_id as company
@@ -230,7 +238,7 @@ def edit():
 def delete():
     employee_id = request.args.get("id")
     print("E_id is:",employee_id)
-
+    # gnb5 added 4/9/23
     # TODO delete-5 if id is missing, flash necessary message and redirect to search
     if not employee_id:
         flash("Employee ID is missing. Please provide a valid employee ID.", "warning")
@@ -257,3 +265,4 @@ def delete():
 
     # TODO delete-2 redirect to employee search
     return redirect(url_for("employee.search", **redirect_args))
+
