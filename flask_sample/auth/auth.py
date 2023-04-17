@@ -143,7 +143,7 @@ def profile():
             try: # update email, username (this will trigger if nothing changed but it's fine)
                 result = DB.update("UPDATE IS601_Users SET email = %s, username = %s WHERE id = %s", email, username, user_id)
                 if result.status:
-                    flash("Saved profile", "success")
+                    flash(f"Saved profile for {username} : {email}", "success")
             except Exception as e:
                 check_duplicate(e)
     try:
