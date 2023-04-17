@@ -19,4 +19,4 @@ RUN pip install -r requirements.txt
 CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 main:app
 
 # To run locally after installation of Docker Desktop
-# docker run -p 3000:8080 --rm -it $(docker build -q .)
+# \docker run -p 3000:8080 --rm -it $(docker build -q .)
