@@ -83,7 +83,12 @@ def shop_list():
         flash("There was a problem loading products", "danger")
     return render_template("shop.html", rows=rows)
 
+
+
+
+
 @shop.route("/cart", methods=["GET","POST"])
+@login_required
 def cart():
     product_id = request.form.get("product_id")
     id = request.form.get("id", product_id)

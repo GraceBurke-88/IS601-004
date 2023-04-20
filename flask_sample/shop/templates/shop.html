@@ -9,19 +9,10 @@
         height: auto;
         object-fit: cover;
     }
-    .hover-clickable {
-    cursor: pointer;
-    transition: color 0.2s;
-    }
-
-    .hover-clickable:hover {
-    color: red;
-    }
-
 </style>
 
-<div class="container-fluid">
-    <div class="h4">Shop</div>
+<div class="container-xl" >
+    <div class="h4" style="text-align: center; margin-top: 2rem;">Shop</div>
     <div class="row">
         {% for row in rows %}
         <div class="col mb-4">
@@ -46,6 +37,11 @@
                             <input type="submit" value="+Add" class="btn btn-dark" />
                         </div>
                     </form>
+                <!-- Add edit button: https://developer.mozilla.org/en-US/docs/Web/API/Window/location -->
+                {% if current_user.is_authenticated and current_user.has_role("Admin") %}
+                <button type="button" class="btn btn-warning" style="margin-top: 1rem;" onclick="window.location.href='{{ url_for('shop.product', id=row['id']) }}'">Edit</button>
+                {% endif %}
+
                 </div>
             </div>
         </div>

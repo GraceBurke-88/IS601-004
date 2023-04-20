@@ -3,7 +3,6 @@
     {{ value[:length] ~ '...' if value|length > length else value }}
 {% endmacro %}
 
-
 {% macro render_table(title, data, ignored = [], view =None, edit=None, delete=None) %}
 <div class="container-fluid">
     <div class="h1">{{title}}</div>

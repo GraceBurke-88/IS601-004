@@ -57,8 +57,13 @@
             </tr>
             {% endfor %}
             <tr>
+                <td>
+                    <button type="submit" class="btn btn-danger btn-sm">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
                 <td class="text-end" colspan="100%">
-                    Total: ${{ns.total or 0}}
+                    <h4>Total: ${{ns.total or 0}}</h3>
                 </td>
             </tr>
         </tbody>
