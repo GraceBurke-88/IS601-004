@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+{% block title %}Shop{% endblock %}
+{% block content %}
+<style>
+    .card-img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    .card-title a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .card-title a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="h1">Shop</div>
+    <form class="row row-cols-lg-auto g-3 align-items-center">
+        <div class="col-12">
+            <label class="form-label" for="name">Name</label>
+            <input type="text" name="name" class="form-control" id="name" placeholder="name"
+                value="{{request.args.get('name') or ''}}">
+        </div>
+        <div class="col-12">
+            <label class="form-label" for="category">Category</label>
+            <select class="form-select" id="category" name="category">
+                <option value="">Choose...</option>
+                <!-- Loop through the available categories -->
+                {% for cat in categories %}
+                    <option {{'selected' if request.args.get('category')==cat }} value="{{cat}}">{{cat}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-12">
+            <label class="form-label" for="order">Sort by price</label>
+            <select class="form-select" id="order" name="order" value="{{request.args.get('order')}}">
+                <option value="">Choose...</option>
+                <option {{'selected' if request.args.get('order')=="asc" }} value="asc">Low to High</option>
+                <option {{'selected' if request.args.get('order')=="desc" }} value="desc">High to Low</option>
+            </select>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Filter</button>
+            <a href="?" class="btn btn-secondary">Reset</a>
+        </div>
+    </form>
+    <div class="row mt-4">
+        {% for product in products %}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <img src="{{product['image']}}" class="card-img mb-3" style="height: 400px;">
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="{{ url_for('shop.product_page', product_id=product['id']) }}">{{product.name}}</a></h5>
+                        <p class="card-text">{{product.description}}</p>
+                        <p class="card-text">Category: {{product.category}}</p>
+                        <p class="card-text">Price: ${{product.cost}}</p>
+                        <form action="{{url_for('shop.cart')}}" method="POST">
+                            <input type="hidden" name="id" value="{{product['id']}}" />
+                            <input type="number" class="form-control" name="quantity" value="1" />
+                            <div class="d-grid mt-1">
+                                <input type="submit" value="+Add" class="btn btn-dark" />
+                            </div>
+                        </form>
+                        {% if current_user.is_authenticated and current_user.has_role("Admin") %}
+                        <br><button type="button" class="btn btn-warning" style="margin-top: 1rem;" onclick=window.location.href='{{ url_for('shop.product', id=product['id']) }}'>Edit</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

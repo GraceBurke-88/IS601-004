@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %}{{type}} Products{% endblock %}
+{% block content %}
+{% from "_formhelpers.html" import render_field %}
+<!-- form to add a product -->
+<div class="container-fluid">
+    <div class="h3">{{type}} Product</div>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {{render_field(form.name)}}
+        {{render_field(form.description)}}
+        {{render_field(form.stock)}}
+        {{render_field(form.category)}}
+        {{render_field(form.cost)}}
+        {{render_field(form.image)}}
+        {{render_field(form.visibility)}}
+        {{form.submit(class="btn btn-primary")}}
+    </form>
+</div>
+{% endblock %}
+
+

@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block title %}Products{% endblock %}
+<!-- Table of products for admin to use -->
+<!-- content -->
+{% block content %}
+{% from "_table_helper.html" import render_table %}
+{% set view = "shop.product_page" %}
+{% set edit = "shop.product" %}
+{% set delete = "shop.delete" %}
+{{render_table("Products", rows, ["user_id"], view, edit, delete)}}
+{% endblock %}
+
+

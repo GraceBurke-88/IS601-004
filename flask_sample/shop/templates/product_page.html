@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+<!-- Implemented by gnb5 4/18/23 -->
+<!-- Page showcasing singular product -->
+{% block content %}
+<div class="container product-page" style="margin-top: 6rem;">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{{ product.image }}" alt="{{ product.name }}" class="img-fluid" />
+        </div>
+        <div class="col-md-6" style="padding: 2rem;">
+            <h1>{{ product.name }}</h1>
+            <p>{{ product.description }}</p>
+            <p>Stock: {{ product.stock }}</p> 
+            <p>Price: ${{ product.cost }}</p>
+            <!-- Add quantity input and "Add to Cart" button -->
+            <form action="{{ url_for('shop.cart') }}" method="POST">
+                <input type="hidden" name="id" value="{{ product.id }}" />
+                <div class="form-group">
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" class="form-control" id="quantity" name="quantity" value="1" min="1" style="margin-top: 1rem;" />
+                </div>
+                <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">Add to Cart</button>
+            </form>  
+            <!-- Add edit button: https://developer.mozilla.org/en-US/docs/Web/API/Window/location -->
+            {% if current_user.is_authenticated and current_user.has_role("Admin") %}
+                <button type="button" class="btn btn-warning" style="margin-top: 1rem;" onclick=window.location.href='{{ url_for('shop.product', id=product.id) }}'>Edit</button>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
