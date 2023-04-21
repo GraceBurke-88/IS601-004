@@ -6,42 +6,43 @@ from roles.permissions import admin_permission
 from flask_login import login_required, current_user
 shop = Blueprint('shop', __name__, url_prefix='/',template_folder='templates')
 
-@shop.route("/admin/product", methods=["GET","POST"])
+@shop.route("/admin/product", methods=["GET", "POST"])
 @admin_permission.require(http_exception=403)
 def product():
     form = ProductForm()
     id = request.args.get("id", form.id.data or None)
     type = "Edit" if id else "Create"
     if form.validate_on_submit():
-        if form.id.data: # it's an update
+        if form.id.data:  # it's an update
             try:
-                result = DB.update("UPDATE IS601_Products set name = %s, description = %s, stock = %s, cost = %s, image=%s WHERE id = %s",
-                form.name.data, form.description.data, form.stock.data, form.cost.data, form.image.data, form.id.data)
+                result = DB.update("UPDATE IS601_Products set name = %s, description = %s, stock = %s, cost = %s, image = %s, category = %s, visibility = %s WHERE id = %s",
+                form.name.data, form.description.data, form.stock.data, form.cost.data, form.image.data, form.category.data, form.visibility.data, form.id.data)
                 if result.status:
                     flash(f"Updated {form.name.data}", "success")
             except Exception as e:
                 print("Error updating product", e)
                 flash(f"Error updating product {form.name.data}", "danger")
-        else: # it's a create
+        else:  # it's a create
             try:
-                result = DB.update("""INSERT INTO IS601_Products (name, description, stock, cost, image) 
-                VALUES (%s,%s,%s,%s,%s)""",
-                form.name.data, form.description.data, form.stock.data, form.cost.data, form.image.data)
+                result = DB.update("""INSERT INTO IS601_Products (name, description, stock, cost, image, category, visibility) 
+                VALUES (%s,%s,%s,%s,%s,%s,%s)""",
+                form.name.data, form.description.data, form.stock.data, form.cost.data, form.image.data, form.category.data, form.visibility.data)
                 if result.status:
                     flash(f"Created {form.name.data}", "success")
-                    form = ProductForm() # clear form
+                    form = ProductForm()  # clear form
             except Exception as e:
                 print("Error creating product", e)
                 flash(f"Error creating product {form.name.data}", "danger")
     if id:
         try:
-            result = DB.selectOne("SELECT id, name, description, stock, cost, image FROM IS601_Products WHERE id = %s", id)
+            result = DB.selectOne("SELECT id, name, description, stock, cost, image, category, visibility FROM IS601_Products WHERE id = %s", id)
             if result.status and result.row:
-                    form.process(MultiDict(result.row))
+                form.process(MultiDict(result.row))
         except Exception as e:
             print("Error fetching product", e)
             flash("Product not found", "danger")
     return render_template("product.html", form=form, type=type)
+
 
 @shop.route("/admin/products/delete", methods=["GET"])
 @admin_permission.require(http_exception=403)
@@ -62,7 +63,7 @@ def delete():
 def products():
     rows = []
     try:
-        result = DB.selectAll("SELECT id, name, description, stock, cost, image FROM IS601_Products LIMIT 25",)
+        result = DB.selectAll("SELECT id, name, description, stock, cost, image, visibility FROM IS601_Products LIMIT 25",)
         if result.status and result.rows:
             rows = result.rows
     except Exception as e:
@@ -70,20 +71,66 @@ def products():
         flash("There was a problem loading products", "danger")
     return render_template("products.html", rows=rows)
 
+'''
 @shop.route("/shop", methods=["GET","POST"])
 def shop_list():
     rows = []
     try:
-        result = DB.selectAll("SELECT id, name, description, stock, cost, image FROM IS601_Products WHERE stock > 0 LIMIT 10",)
+        result = DB.selectAll("SELECT id, name, description, stock, cost, image, visibility FROM IS601_Products WHERE stock > 0 LIMIT 10",)
         #george: rows = db.session.query(Product).order_by(Product.created_at.desc()).limit(10).all()
         if result.status and result.rows:
             rows = result.rows
+            print(result.rows[1])
+            #need to only show product if visible =0
     except Exception as e:
         print("Error fetching products", e)
         flash("There was a problem loading products", "danger")
     return render_template("shop.html", rows=rows)
+'''
+@shop.route('/shop', methods=['GET'])
+def shop_list():
+    name = request.args.get("name")
+    category = request.args.get("category")
+    order = request.args.get("order")
+    limit = request.args.get("limit", 10)
+    args = []
 
+    query = "SELECT * FROM IS601_Products WHERE visibility = 1"
 
+    if name:
+        query += " AND name LIKE %s"
+        args.append(f"%{name}%")
+    
+    if category:
+        query += " AND category = %s"
+        args.append(category)
+    
+    if order:
+        if order in ["asc", "desc"]:
+            query += f" ORDER BY cost {order}"
+    
+    if limit and int(limit) > 0 and int(limit) <= 100:
+        query += " LIMIT %s"
+        args.append(int(limit))
+    
+    rows = []
+    try:
+        resp = DB.selectAll(query, *args)
+        if resp.status:
+            rows = resp.rows
+    except Exception as e:
+        flash(str(e), "danger")
+
+    # Get unique categories
+    categories = []
+    try:
+        cat_resp = DB.selectAll("SELECT DISTINCT category FROM IS601_Products WHERE visibility = 1")
+        if cat_resp.status:
+            categories = [row['category'] for row in cat_resp.rows]
+    except Exception as e:
+        flash(str(e), "danger")
+
+    return render_template("shop.html", products=rows, categories=categories)
 
 
 
@@ -175,3 +222,19 @@ def product_page(product_id):
         print("Error fetching product", e)
         flash("There was a problem loading the product", "danger")
         return redirect(url_for("shop.shop_list"))
+    
+#clear cart
+@shop.route('/shop/clear_cart', methods=['POST'])
+@login_required
+def clear_cart():
+    user_id = current_user.id
+
+    try:
+        result = DB.delete("DELETE FROM IS601_Cart WHERE user_id = %s", user_id)
+        if result.status:
+            flash("Cart cleared successfully", "success")
+    except Exception as e:
+        print("Error clearing cart", e)
+        flash("Error clearing cart", "danger")
+
+    return redirect(url_for('shop.cart'))

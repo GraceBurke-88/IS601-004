@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, HiddenField, TextAreaField, IntegerField, URLField, SubmitField
+from wtforms import StringField, HiddenField, TextAreaField, IntegerField, URLField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Optional, NumberRange
 
 class ProductForm(FlaskForm):
@@ -10,3 +10,5 @@ class ProductForm(FlaskForm):
     cost = IntegerField("cost", validators=[NumberRange(min=0)])
     image = URLField("image", validators=[Optional()])
     submit = SubmitField("Save")
+    category = StringField('category')  # Add this line
+    visibility = BooleanField('visibility')  # Add this line

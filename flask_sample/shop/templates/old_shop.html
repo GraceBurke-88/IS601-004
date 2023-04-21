@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+{% block title %}Shop{% endblock %}
+
+<!-- content -->
+{% block content %}
+<style>
+    .card-img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+</style>
+
+<div class="container-xl" >
+    <div class="h4" style="text-align: center; margin-top: 2rem;">Shop</div>
+    <div class="row">
+        {% for row in rows %}
+        <div class="col mb-4">
+            <div class="card " style="width: 20em">
+                <div class="card-body">                  
+                    {% if row["image"] %}
+                    <img src="{{row['image']}}" class="card-img mb-3" style="height: 400px;">
+                    {% endif %}
+                    <div class="card-title">
+                        <a href="{{ url_for('shop.product_page', product_id=row['id']) }}" class="text-dark text-decoration-none fw-bold fs-6 hover-clickable">{{row["name"]}}</a>
+                    </div>  
+                    <div class="card-text fs-6">
+                        Cost: ${{row["cost"]}}
+                    </div>
+                </div>
+                <div class="card-footer">
+            
+                    <form action="{{url_for('shop.cart')}}" method="POST">
+                        <input type="hidden" name="id" value="{{row['id']}}" />
+                        <input type="number" class="form-control" name="quantity" value="1" />
+                        <div class="d-grid mt-1">
+                            <input type="submit" value="+Add" class="btn btn-dark" />
+                        </div>
+                    </form>
+                <!-- Add edit button: https://developer.mozilla.org/en-US/docs/Web/API/Window/location -->
+                {% if current_user.is_authenticated and current_user.has_role("Admin") %}
+                <button type="button" class="btn btn-warning" style="margin-top: 1rem;" onclick=window.location.href='{{ url_for('shop.product', id=row['id']) }}'>Edit</button>
+                {% endif %}
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

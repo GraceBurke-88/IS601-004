@@ -26,7 +26,12 @@
                         <img src="https://via.placeholder.com/50" alt="placeholder">
                     {% endif %}
                 </td>
-                <td>{{row["name"]}}</td>
+                <td>
+                    <!-- when the user clicks on the product name in the cart, they will be taken to the product details page for that specific product -->
+                    <a href="{{ url_for('shop.product_page', product_id=row['product_id']) }}">
+                        {{row["name"]}}
+                    </a>
+                </td>
                 <td style="width:10em">
                     <form method="POST">
                         <div class="row">
@@ -52,15 +57,21 @@
                             <i class="bi bi-trash"></i>
                         </button>
                     </form>
+                    <!-- Add edit button: https://developer.mozilla.org/en-US/docs/Web/API/Window/location -->
+                    {% if current_user.is_authenticated and current_user.has_role("Admin") %}
+                        <button type="button" class="btn btn-warning" style="margin-top: 1rem;" onclick=window.location.href='{{ url_for('shop.product', id=row['product_id']) }}'>Edit ITEM</button>
+                    {% endif %}
                 </td>
                 {% set ns.total = ns.total + row['subtotal'] %}
             </tr>
             {% endfor %}
             <tr>
                 <td>
-                    <button type="submit" class="btn btn-danger btn-sm">
-                        <i class="bi bi-trash"></i>
-                    </button>
+                    <form action="{{ url_for('shop.clear_cart') }}" method="POST">
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="bi bi-trash"></i> Clear Cart
+                        </button>
+                    </form>
                 </td>
                 <td class="text-end" colspan="100%">
                     <h4>Total: ${{ns.total or 0}}</h3>
