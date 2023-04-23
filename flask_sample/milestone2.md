@@ -1,6 +1,6 @@
 <table><tr><td> <em>Assignment: </em> IS601 Milestone 2 Shop Project</td></tr>
 <tr><td> <em>Student: </em> Grace Burke (gnb5)</td></tr>
-<tr><td> <em>Generated: </em> 4/23/2023 4:08:20 PM</td></tr>
+<tr><td> <em>Generated: </em> 4/23/2023 4:21:27 PM</td></tr>
 <tr><td> <em>Grading Link: </em> <a rel="noreferrer noopener" href="https://learn.ethereallab.app/homework/IS601-004-S23/is601-milestone-2-shop-project/grade/gnb5" target="_blank">Grading</a></td></tr></table>
 <table><tr><td> <em>Instructions: </em> <ol><li>Checkout Milestone2 branch</li><li>Create a new markdown file called milestone2.md</li><li>git add/commit/push immediate</li><li>Fill in the below deliverables</li><li>At the end copy the markdown and paste it into milestone2.md</li><li>Add/commit/push the changes to Milestone2</li><li>PR Milestone2 to dev and verify</li><li>PR dev to prod and verify</li><li>Checkout dev locally and pull changes to get ready for Milestone 3</li><li>Submit the direct link to this new milestone2.md file from your GitHub prod branch to Canvas</li></ol><p>Note: Ensure all images appear properly on github and everywhere else. Images are only accepted from dev or prod, not local host. All website links must be from prod (you can assume/infer this by getting your dev URL and changing dev to prod).</p></td></tr></table>
 <table><tr><td> <em>Deliverable 1: </em> Users with admin or shop owner will be able to add products </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707773-e6aef7cb-d5b2-4053-bbb1-b09fc609041e.png"></td></tr>
@@ -19,7 +19,7 @@
 <tr><td> <em>Sub-Task 4: </em> Add related pull request link(s)</td></tr>
 <tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/GraceBurke-88/IS601-004/pull/66/commits/bf8d68aaff829d42d443557da9da6a39fd952578">https://github.com/GraceBurke-88/IS601-004/pull/66/commits/bf8d68aaff829d42d443557da9da6a39fd952578</a> </td></tr>
 <tr><td> <em>Sub-Task 5: </em> Add a direct link to heroku prod for this file</td></tr>
-<tr><td> <a rel="noreferrer noopener" target="_blank" href="//shop.py">shop.py</a> </td></tr>
+<tr><td> <a rel="noreferrer noopener" target="_blank" href="https://is601-gnb5-prod.herokuapp.com/admin/product">https://is601-gnb5-prod.herokuapp.com/admin/product</a> </td></tr>
 </table></td></tr>
 <table><tr><td> <em>Deliverable 2: </em> Any user can see visible products on the Shop Page </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707773-e6aef7cb-d5b2-4053-bbb1-b09fc609041e.png"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Add a screenshot of the Shop page showing 10 items without filters/sorting applied</td></tr>
@@ -51,7 +51,7 @@
 <tr><td> <em>Sub-Task 5: </em> Add related pull request link(s)</td></tr>
 <tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/GraceBurke-88/IS601-004/pull/66/commits/32b4fe02b1bcddd161db1bca1d186aee9e9d8a92">https://github.com/GraceBurke-88/IS601-004/pull/66/commits/32b4fe02b1bcddd161db1bca1d186aee9e9d8a92</a> </td></tr>
 <tr><td> <em>Sub-Task 6: </em> Add a direct link to heroku prod for this file</td></tr>
-<tr><td> <a rel="noreferrer noopener" target="_blank" href="//shop.py">shop.py</a> </td></tr>
+<tr><td> <a rel="noreferrer noopener" target="_blank" href="https://is601-gnb5-prod.herokuapp.com/shop">https://is601-gnb5-prod.herokuapp.com/shop</a> </td></tr>
 </table></td></tr>
 <table><tr><td> <em>Deliverable 3: </em> Show Admin/Shop Owner Product List (this is not the Shop page and should show visibility status) </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707773-e6aef7cb-d5b2-4053-bbb1-b09fc609041e.png"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Screenshot of the Admin List page/results</td></tr>
@@ -64,7 +64,7 @@
 <tr><td> <em>Sub-Task 3: </em> Add related pull request link(s)</td></tr>
 <tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/GraceBurke-88/IS601-004/pull/66/commits/bf8d68aaff829d42d443557da9da6a39fd952578#diff-6cd7eb0f770d60d0a570dfd799d975b97541ac0e517a5b34c0aa0d568d1d6e66">https://github.com/GraceBurke-88/IS601-004/pull/66/commits/bf8d68aaff829d42d443557da9da6a39fd952578#diff-6cd7eb0f770d60d0a570dfd799d975b97541ac0e517a5b34c0aa0d568d1d6e66</a> </td></tr>
 <tr><td> <em>Sub-Task 4: </em> Add a direct link to heroku prod for this file</td></tr>
-<tr><td> <a rel="noreferrer noopener" target="_blank" href="//shop.py">shop.py</a> </td></tr>
+<tr><td> <a rel="noreferrer noopener" target="_blank" href="https://is601-gnb5-prod.herokuapp.com/admin/products">https://is601-gnb5-prod.herokuapp.com/admin/products</a> </td></tr>
 </table></td></tr>
 <table><tr><td> <em>Deliverable 4: </em> Admin/Shop Owner Edit button </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707773-e6aef7cb-d5b2-4053-bbb1-b09fc609041e.png"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Add a screenshot showing the edit button visible to the Admin on the Shop page</td></tr>
@@ -95,7 +95,7 @@
 <tr><td> <em>Sub-Task 6: </em> Add related pull request link(s)</td></tr>
 <tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/GraceBurke-88/IS601-004/pull/66/commits/ec9041a2bf6bde2eaa7026e682ec71a072e68088">https://github.com/GraceBurke-88/IS601-004/pull/66/commits/ec9041a2bf6bde2eaa7026e682ec71a072e68088</a> </td></tr>
 <tr><td> <em>Sub-Task 7: </em> Add a direct link to heroku prod for this file</td></tr>
-<tr><td> <a rel="noreferrer noopener" target="_blank" href="//shop.py">shop.py</a> </td></tr>
+<tr><td> <a rel="noreferrer noopener" target="_blank" href="https://is601-gnb5-prod.herokuapp.com/admin/products">https://is601-gnb5-prod.herokuapp.com/admin/products</a> </td></tr>
 </table></td></tr>
 <table><tr><td> <em>Deliverable 5: </em> Product Details Page </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707773-e6aef7cb-d5b2-4053-bbb1-b09fc609041e.png"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Add a screenshot showing the button (clickable item) that directs the user to the Product Details Page</td></tr>
@@ -113,7 +113,7 @@
 <tr><td> <em>Sub-Task 4: </em> Add related pull request link(s)</td></tr>
 <tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/GraceBurke-88/IS601-004/pull/66/commits/bf8d68aaff829d42d443557da9da6a39fd952578#diff-6cd7eb0f770d60d0a570dfd799d975b97541ac0e517a5b34c0aa0d568d1d6e66">https://github.com/GraceBurke-88/IS601-004/pull/66/commits/bf8d68aaff829d42d443557da9da6a39fd952578#diff-6cd7eb0f770d60d0a570dfd799d975b97541ac0e517a5b34c0aa0d568d1d6e66</a> </td></tr>
 <tr><td> <em>Sub-Task 5: </em> Add a direct link to heroku prod for this file (can be any specific item)</td></tr>
-<tr><td> <a rel="noreferrer noopener" target="_blank" href="//shop.py">shop.py</a> </td></tr>
+<tr><td> <a rel="noreferrer noopener" target="_blank" href="https://is601-gnb5-prod.herokuapp.com/product/1">https://is601-gnb5-prod.herokuapp.com/product/1</a> </td></tr>
 </table></td></tr>
 <table><tr><td> <em>Deliverable 6: </em> Add to Cart </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707773-e6aef7cb-d5b2-4053-bbb1-b09fc609041e.png"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Add a screenshot of the success message of adding to cart</td></tr>
@@ -149,7 +149,7 @@
 <tr><td> <em>Sub-Task 3: </em> Add related pull request link(s)</td></tr>
 <tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/GraceBurke-88/IS601-004/pull/66/commits/32b4fe02b1bcddd161db1bca1d186aee9e9d8a92#diff-6cd7eb0f770d60d0a570dfd799d975b97541ac0e517a5b34c0aa0d568d1d6e66">https://github.com/GraceBurke-88/IS601-004/pull/66/commits/32b4fe02b1bcddd161db1bca1d186aee9e9d8a92#diff-6cd7eb0f770d60d0a570dfd799d975b97541ac0e517a5b34c0aa0d568d1d6e66</a> </td></tr>
 <tr><td> <em>Sub-Task 4: </em> Add a direct link to heroku prod for this file</td></tr>
-<tr><td> <a rel="noreferrer noopener" target="_blank" href="//shop.py">shop.py</a> </td></tr>
+<tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/GraceBurke-88/IS601-004/blob/cfb270771107d943d72529f39c9a7283b84efa73/flask_sample/shop/shop.py">https://github.com/GraceBurke-88/IS601-004/blob/cfb270771107d943d72529f39c9a7283b84efa73/flask_sample/shop/shop.py</a> </td></tr>
 </table></td></tr>
 <table><tr><td> <em>Deliverable 8: </em> User can update cart quantity </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707773-e6aef7cb-d5b2-4053-bbb1-b09fc609041e.png"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Show a before and after screenshot of Cart Quantity update</td></tr>
@@ -203,10 +203,10 @@
 <tr><td> <em>Sub-Task 4: </em> Add related pull request link(s)</td></tr>
 <tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/GraceBurke-88/IS601-004/pull/66/commits/32b4fe02b1bcddd161db1bca1d186aee9e9d8a92#diff-6cd7eb0f770d60d0a570dfd799d975b97541ac0e517a5b34c0aa0d568d1d6e66">https://github.com/GraceBurke-88/IS601-004/pull/66/commits/32b4fe02b1bcddd161db1bca1d186aee9e9d8a92#diff-6cd7eb0f770d60d0a570dfd799d975b97541ac0e517a5b34c0aa0d568d1d6e66</a> </td></tr>
 </table></td></tr>
-<table><tr><td> <em>Deliverable 10: </em> Misc </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707834-bf5a5b13-ec36-4597-9741-aa830c195be2.png"></td></tr>
+<table><tr><td> <em>Deliverable 10: </em> Misc </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707773-e6aef7cb-d5b2-4053-bbb1-b09fc609041e.png"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Describe any issues and learnings throughout this milestone</td></tr>
 <tr><td> <em>Response:</em> <p>I had some issues with my database because the initial table I created<br>for IS601_Products was missing some columns. To fix this I tried adding an<br>sql file to modify the table. However, this did not work so I<br>had to manually fix the two columns and their types. Not ideal, but<br>got the database working correctly. I also had an issue with some of<br>the bootstrap formatting-- which I am still messing around. The bootstrap documentation on<br>the site is pretty helpful so I used that to make the layout<br>and UI better.&nbsp;<br></p><br></td></tr>
 <tr><td> <em>Sub-Task 2: </em> Add a link to your herok prod project's login page</td></tr>
-<tr><td>Not provided</td></tr>
+<tr><td> <a rel="noreferrer noopener" target="_blank" href="https://is601-gnb5-prod.herokuapp.com/login">https://is601-gnb5-prod.herokuapp.com/login</a> </td></tr>
 </table></td></tr>
 <table><tr><td><em>Grading Link: </em><a rel="noreferrer noopener" href="https://learn.ethereallab.app/homework/IS601-004-S23/is601-milestone-2-shop-project/grade/gnb5" target="_blank">Grading</a></td></tr></table>
