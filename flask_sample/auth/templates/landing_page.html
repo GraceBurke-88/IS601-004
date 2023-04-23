@@ -1,8 +1,30 @@
 {% extends "layout.html" %}
 {% block title %}Landing Page{% endblock %}
 {% block content %}
-<div class="container-fluid">
-    <div class="h3">Welcome</div>
-    {{current_user.username}}
+
+<div class="container-fluid" style="margin-top: 4rem;">
+    <div class="row">
+        <div class="col-12">
+            <!-- Hero card -->
+            <div class="card mb-3" style="max-width: 100%; border: 0;">
+                <div class="row g-0">
+                    <div class="col-md-6">
+                        <img src="https://media.discordapp.net/attachments/1093274578391924887/1098345350407917759/grace88_flatlay_of_healthy_food_items_that_relate_to_fitness_or_668b20f4-f8d0-4cd8-ae06-eec1869e6104.png?width=1400&height=1400" alt="hero image" class="img-fluid rounded-start">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body" style="margin-top: 6rem;">
+                            <h5 class="card-title">Welcome, {{current_user.username}}!</h5>
+                            <h1 class="display-4" >Discover the magic of healthy eating!</h1>
+                            <p class="lead" style="margin-top: 0.5rem;">Embark on a flavorful adventure to elevate your health and wellness! Explore our new line of cocoa superfoods.</p>
+                            <a href="{{url_for('shop.shop_list')}}" class="btn btn-primary">Shop Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
+
+
+
