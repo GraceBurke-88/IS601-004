@@ -71,22 +71,7 @@ def products():
         flash("There was a problem loading products", "danger")
     return render_template("products.html", rows=rows)
 
-'''
-@shop.route("/shop", methods=["GET","POST"])
-def shop_list():
-    rows = []
-    try:
-        result = DB.selectAll("SELECT id, name, description, stock, cost, image, visibility FROM IS601_Products WHERE stock > 0 LIMIT 10",)
-        #george: rows = db.session.query(Product).order_by(Product.created_at.desc()).limit(10).all()
-        if result.status and result.rows:
-            rows = result.rows
-            print(result.rows[1])
-            #need to only show product if visible =0
-    except Exception as e:
-        print("Error fetching products", e)
-        flash("There was a problem loading products", "danger")
-    return render_template("shop.html", rows=rows)
-'''
+#gnb5 implemented on 4/21/23
 @shop.route('/shop', methods=['GET'])
 def shop_list():
     name = request.args.get("name")
@@ -133,7 +118,7 @@ def shop_list():
     return render_template("shop.html", products=rows, categories=categories)
 
 
-
+#gnb5 4/18/23
 @shop.route("/cart", methods=["GET","POST"])
 @login_required
 def cart():
@@ -223,7 +208,7 @@ def product_page(product_id):
         flash("There was a problem loading the product", "danger")
         return redirect(url_for("shop.shop_list"))
     
-#clear cart
+#clear cart 
 @shop.route('/shop/clear_cart', methods=['POST'])
 @login_required
 def clear_cart():
