@@ -1,10 +1,11 @@
 from flask import Blueprint, request, flash, render_template, redirect, url_for
 from werkzeug.datastructures import MultiDict
-from shop.forms import ProductForm
+from shop.forms import ProductForm, CheckoutForm
 from sql.db import DB
 from roles.permissions import admin_permission
 from flask_login import login_required, current_user
 shop = Blueprint('shop', __name__, url_prefix='/',template_folder='templates')
+
 
 @shop.route("/admin/product", methods=["GET", "POST"])
 @admin_permission.require(http_exception=403)
@@ -223,3 +224,26 @@ def clear_cart():
         flash("Error clearing cart", "danger")
 
     return redirect(url_for('shop.cart'))
+
+#gnb5 implemented 4/23 checkout
+@shop.route('/shop/checkout', methods=['GET', 'POST'])
+@login_required
+def checkout():
+    form = CheckoutForm()
+    if form.validate_on_submit():
+        # Process the form data and create an order in the database
+        # You'll need to implement this function
+        success = process_order(form, current_user)
+        if success:
+            flash("Order successfully placed!", "success")
+            return redirect(url_for("shop.shop_list"))
+        else:
+            flash("Payment failed. Please try again.", "danger")
+
+    return render_template('checkout.html', form=form)
+
+
+
+
+def process_order(x,y):
+    pass

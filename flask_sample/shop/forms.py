@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, HiddenField, TextAreaField, IntegerField, URLField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Length, Optional, NumberRange
+from wtforms import StringField, HiddenField, TextAreaField, IntegerField, URLField, SubmitField, BooleanField, FloatField, SelectField
+from wtforms.validators import DataRequired, Length, Optional, NumberRange, InputRequired
 
 class ProductForm(FlaskForm):
     id = HiddenField("id", validators=[Optional()])
@@ -12,3 +12,14 @@ class ProductForm(FlaskForm):
     submit = SubmitField("Save")
     category = StringField('category')  # Add this line
     visibility = BooleanField('visibility')  # Add this line
+
+class CheckoutForm(FlaskForm):
+    payment_method = SelectField("Payment Method", choices=[("Cash", "Cash"), ("Visa", "Visa"), ("MasterCard", "MasterCard"), ("Amex", "Amex")])
+    money_received = FloatField("Payment Amount", validators=[InputRequired()])
+    address = StringField("Address", validators=[InputRequired(), Length(max=255)])
+    city = StringField("City", validators=[InputRequired(), Length(max=100)])
+    state = StringField("State", validators=[InputRequired(), Length(max=100)])
+    zip_code = StringField("Zip Code", validators=[InputRequired(), Length(max=10)])
+    submit = SubmitField("Checkout")
+
+    

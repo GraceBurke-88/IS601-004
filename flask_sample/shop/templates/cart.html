@@ -73,6 +73,8 @@
                         </button>
                     </form>
                 </td>
+                <!-- adding checkout button gnb5 4/23-->
+                <td><a href="{{ url_for('shop.checkout') }}" class="btn btn-primary">Proceed to Checkout</a></td>
                 <td class="text-end" colspan="100%">
                     <h4>Total: ${{ns.total or 0}}</h3>
                 </td>

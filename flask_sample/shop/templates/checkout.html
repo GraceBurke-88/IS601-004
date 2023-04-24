@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title %}{{type}} Checkout{% endblock %}
+{% block content %}
+{% from "_formhelpers.html" import render_field %}
+<!-- form to checkout -->
+<div class="container-fluid">
+    <div class="h3">{{type}} Checkout</div>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <h5>Total: AMOUNT</h5>
+        {{render_field(form.payment_method)}}
+        {{render_field(form.money_received)}}
+        {{render_field(form.address)}}
+        {{render_field(form.city)}}
+        {{render_field(form.state)}}
+        {{render_field(form.zip_code)}}
+        {{form.submit(class="btn btn-primary")}}
+    </form>
+</div>
+</form>
+{% endblock %}
+
+
