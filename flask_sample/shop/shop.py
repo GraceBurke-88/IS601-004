@@ -279,7 +279,7 @@ def process_order(form, current_user):
     cart_items = get_cart_items(current_user.id)
     total_price = sum(item['cost'] * item['quantity'] for item in cart_items)
     # Verify if the payment is valid
-    # Verify if the payment is valid
+    # implemented by gnb5 5/4/23
     if form.money_received.data < total_price:
         flash("Payment amount is not sufficient. Please try again.", "warning")
         return False
@@ -287,7 +287,7 @@ def process_order(form, current_user):
     #flash(cart_items)
 
 
-    # Verify product price and stock
+    # Verify product price and stock implemented by gnb5 4/23
     for item in cart_items:
         result = DB.selectOne("SELECT cost, stock FROM IS601_Products WHERE id = %s", item['product_id'])
         print(f"Result: {result}")  # Debug print statement
@@ -314,7 +314,7 @@ def process_order(form, current_user):
 
     #FIX THIS 
     #result = DB.insertOne("INSERT INTO IS601_Orders (user_id, payment_method, money_received, address) VALUES (%s, %s, %s, %s)", current_user.id, form.payment_method.data, form.money_received.data, form.address.data)
-    result = DB.insertOne("INSERT INTO IS601_Orders (user_id, payment_method, money_received, address, total_price) VALUES (%s, %s, %s, %s, %s)", current_user.id, form.payment_method.data, form.money_received.data, form.address.data, total_price)
+    result = DB.insertOne("INSERT INTO IS601_Orders (user_id, payment_method, money_received, address, total_price) VALUES (%s, %s, %s, %s, %s)", current_user.id, form.payment_method.data, form.money_received.data, address, total_price)
 
 
     if not result.status:
@@ -392,7 +392,7 @@ def checkout():
     form = CheckoutForm()
     if form.validate_on_submit():
         # Process the form data and create an order in the database
-        # You'll need to implement this function
+        # still need to implement this function
         success = process_order(form, current_user)
         if success:
             flash("Order successfully placed!", "success")
@@ -401,6 +401,7 @@ def checkout():
             flash("Payment failed. Please try again.", "danger")
 
     #return render_template('checkout.html', form=form)
-    return render_template('checkout.html', form=form, total_amount=total_amount) #adding total of cart
+    #return render_template('checkout.html', form=form, total_amount=total_amount) #adding total of cart
+    return render_template('checkout.html', form=form, cart_items=cart_items, total_amount=total_amount)
 
 

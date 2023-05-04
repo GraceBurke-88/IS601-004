@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container-fluid">
     <h3>Order Confirmation</h3>
-    <p>Thank you for your purchase!</p>
+    <p>Thank you for your purchase we hope your items are Wonderfuel!</p>
 
     <h4>Order Details</h4>
     <table class="table">
@@ -30,5 +30,6 @@
     <h4>Payment Details</h4>
     <p>Payment Method: {{ order.payment_method }}</p>
     <p>Amount Paid: {{ order.money_received }}</p>
+    <p>Shipping Address: {{ order.address }}</p>
 </div>
 {% endblock %}
