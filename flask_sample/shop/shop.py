@@ -226,17 +226,46 @@ def clear_cart():
 
     return redirect(url_for('shop.cart'))
 
+
 #gnb5 implemented 5/4 conform order page
-@shop.route('/shop/confirm_order', methods=['GET'])
+@shop.route('/confirm_order/<int:order_id>', methods=['GET'])
 @login_required
-def confirm_order():
-    return render_template('confirm_order.html')
+def confirm_order(order_id):
+    # Retrieve the order and related order items from the database
+    order_result = DB.selectOne("SELECT * FROM IS601_Orders WHERE id = %s", order_id)
+    if not order_result.status:
+        flash("Error", "danger")
+        return False
+
+    order = order_result.row
+    #Need to use a join to display names on confirmation page 
+
+    order_items_result = DB.selectAll("""SELECT io.*, p.name
+                                    FROM IS601_OrderItems io
+                                    JOIN IS601_Products p ON io.product_id = p.id
+                                    WHERE io.order_id = %s
+                                """, order_id)
 
 
-#gnb5 implemented 4/23 checkout
-@shop.route('/shop/checkout', methods=['GET', 'POST'])
-@login_required
-def checkout():
+    if not order_items_result.status:
+        flash("Error", "danger")
+        return False
+
+    order_items = order_items_result.rows
+
+    # Calculate the total value
+    total_value = sum(item['unit_price'] * item['quantity'] for item in order_items)
+
+    # Retrieve the payment method and amount paid
+    payment_method = order['payment_method']
+    amount_paid = order['money_received']
+
+    return render_template('confirm_order.html', order_id=order_id, order=order, order_items=order_items, total_value=total_value, payment_method=payment_method, amount_paid=amount_paid)
+
+
+
+def process_order(form, current_user):
+    # Calculate cart items
     def get_cart_items(user_id):
         result = DB.selectAll("""SELECT c.id, c.product_id, p.name, c.quantity, c.cost, p.stock
                             FROM IS601_Cart c
@@ -247,29 +276,6 @@ def checkout():
             return result.rows
         else:
             return []
-        
-    # Calculate the total amount here
-    # Calculate cart items
-    cart_items = get_cart_items(current_user.id)
-    total_amount= sum(item['cost'] * item['quantity'] for item in cart_items)
-    form = CheckoutForm()
-    if form.validate_on_submit():
-        # Process the form data and create an order in the database
-        # You'll need to implement this function
-        success = process_order(form, current_user)
-        if success:
-            flash("Order successfully placed!", "success")
-            #return redirect(url_for("shop.shop_list"))
-            return redirect(url_for("shop.confirm_order"))  # Changd this line to redirect to the confirm_order page
-        else:
-            flash("Payment failed. Please try again.", "danger")
-
-    #return render_template('checkout.html', form=form)
-    return render_template('checkout.html', form=form, total_amount=total_amount) #adding total of cart
-
-
-def process_order(form, current_user):
-    # Calculate cart items
     cart_items = get_cart_items(current_user.id)
     total_price = sum(item['cost'] * item['quantity'] for item in cart_items)
     # Verify if the payment is valid
@@ -357,7 +363,44 @@ def process_order(form, current_user):
     if not result.status:
         flash("Error clearing cart. Please try again.", "danger")
         return False
-    # Redirect user to Order Confirmation Page
-    return redirect(url_for("shop.confirm_order"))
+
+    # return for redirect in checkout route
+    return inserted_primary_key
+
+
+
+#gnb5 implemented 4/23 checkout
+@shop.route('/shop/checkout', methods=['GET', 'POST'])
+@login_required
+def checkout():
+    
+    def get_cart_items(user_id):
+        result = DB.selectAll("""SELECT c.id, c.product_id, p.name, c.quantity, c.cost, p.stock
+                            FROM IS601_Cart c
+                            JOIN IS601_Products p ON c.product_id = p.id
+                            WHERE c.user_id = %s
+                        """, user_id)
+        if result.status:
+            return result.rows
+        else:
+            return []
+        
+    # Calculate the total amount here
+    # Calculate cart items
+    cart_items = get_cart_items(current_user.id)
+    total_amount= sum(item['cost'] * item['quantity'] for item in cart_items)
+    form = CheckoutForm()
+    if form.validate_on_submit():
+        # Process the form data and create an order in the database
+        # You'll need to implement this function
+        success = process_order(form, current_user)
+        if success:
+            flash("Order successfully placed!", "success")
+            return redirect(url_for("shop.confirm_order", order_id=success))
+        else:
+            flash("Payment failed. Please try again.", "danger")
+
+    #return render_template('checkout.html', form=form)
+    return render_template('checkout.html', form=form, total_amount=total_amount) #adding total of cart
 
 
