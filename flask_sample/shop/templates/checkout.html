@@ -1,5 +1,4 @@
 {% extends "layout.html" %}
-
 {% block title %}{{type}} Checkout{% endblock %}
 {% block content %}
 {% from "_formhelpers.html" import render_field %}
@@ -8,7 +7,8 @@
     <div class="h3">{{type}} Checkout</div>
     <form method="POST">
         {{ form.hidden_tag() }}
-        <h5>Total: AMOUNT</h5>
+        <h5>Cart Total: ${{ total_amount }}</h5>
+
         {{render_field(form.payment_method)}}
         {{render_field(form.money_received)}}
         {{render_field(form.address)}}
@@ -20,5 +20,6 @@
 </div>
 </form>
 {% endblock %}
+
 
 

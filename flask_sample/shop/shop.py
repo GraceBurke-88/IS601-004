@@ -174,6 +174,7 @@ def cart():
                 result = DB.delete("DELETE FROM IS601_Cart where product_id = %s and user_id = %s", id, user_id)
                 if result.status:
                     flash("Deleted product from cart", "success")
+
             except Exception as e:
                 print("Error deleting product", e)
                 flash("Error deleting product from cart", "danger")
@@ -225,10 +226,32 @@ def clear_cart():
 
     return redirect(url_for('shop.cart'))
 
+#gnb5 implemented 5/4 conform order page
+@shop.route('/shop/confirm_order', methods=['GET'])
+@login_required
+def confirm_order():
+    return render_template('confirm_order.html')
+
+
 #gnb5 implemented 4/23 checkout
 @shop.route('/shop/checkout', methods=['GET', 'POST'])
 @login_required
 def checkout():
+    def get_cart_items(user_id):
+        result = DB.selectAll("""SELECT c.id, c.product_id, p.name, c.quantity, c.cost, p.stock
+                            FROM IS601_Cart c
+                            JOIN IS601_Products p ON c.product_id = p.id
+                            WHERE c.user_id = %s
+                        """, user_id)
+        if result.status:
+            return result.rows
+        else:
+            return []
+        
+    # Calculate the total amount here
+    # Calculate cart items
+    cart_items = get_cart_items(current_user.id)
+    total_amount= sum(item['cost'] * item['quantity'] for item in cart_items)
     form = CheckoutForm()
     if form.validate_on_submit():
         # Process the form data and create an order in the database
@@ -236,14 +259,105 @@ def checkout():
         success = process_order(form, current_user)
         if success:
             flash("Order successfully placed!", "success")
-            return redirect(url_for("shop.shop_list"))
+            #return redirect(url_for("shop.shop_list"))
+            return redirect(url_for("shop.confirm_order"))  # Changd this line to redirect to the confirm_order page
         else:
             flash("Payment failed. Please try again.", "danger")
 
-    return render_template('checkout.html', form=form)
+    #return render_template('checkout.html', form=form)
+    return render_template('checkout.html', form=form, total_amount=total_amount) #adding total of cart
 
 
+def process_order(form, current_user):
+    # Calculate cart items
+    cart_items = get_cart_items(current_user.id)
+    total_price = sum(item['cost'] * item['quantity'] for item in cart_items)
+    # Verify if the payment is valid
+    # Verify if the payment is valid
+    if form.money_received.data < total_price:
+        flash("Payment amount is not sufficient. Please try again.", "warning")
+        return False
+
+    #flash(cart_items)
 
 
-def process_order(x,y):
-    pass
+    # Verify product price and stock
+    for item in cart_items:
+        result = DB.selectOne("SELECT cost, stock FROM IS601_Products WHERE id = %s", item['product_id'])
+        print(f"Result: {result}")  # Debug print statement
+        if result.status and result.row:
+            product_cost, product_stock = result.row["cost"], result.row["stock"]
+            print(result.row)
+            print(f"Product cost: {product_cost}, Cart item cost: {item['cost']}")  # Debug print statement
+            if product_cost != item['cost']:
+                flash(f"Price for {item['name']} has changed. Please update your cart.", "warning")
+                return False
+
+            if product_stock < item['quantity']:
+                flash(f"Insufficient stock for {item['name']}. Please update your cart.", "warning")
+                return False
+        else:
+            flash("Error fetching product details. Please try again.", "danger")
+            return False
+
+    # Make an entry into the Orders table
+    payment_method = form.payment_method.data
+    money_received = form.money_received.data
+    address = form.address.data + ', ' + form.city.data + ', ' + form.state.data + ', ' + form.zip_code.data
+    user_id = current_user.id
+
+    #FIX THIS 
+    #result = DB.insertOne("INSERT INTO IS601_Orders (user_id, payment_method, money_received, address) VALUES (%s, %s, %s, %s)", current_user.id, form.payment_method.data, form.money_received.data, form.address.data)
+    result = DB.insertOne("INSERT INTO IS601_Orders (user_id, payment_method, money_received, address, total_price) VALUES (%s, %s, %s, %s, %s)", current_user.id, form.payment_method.data, form.money_received.data, form.address.data, total_price)
+
+
+    if not result.status:
+        flash("Error creating order. Please try again.", "danger")
+        return False
+
+    # Get last Order ID from Orders table
+    #order_id = result.lastrowid
+    if result.status:
+        # Fetch the primary key of the inserted row
+        primary_key_query = "SELECT LAST_INSERT_ID();"
+        primary_key_result = DB.selectAll(primary_key_query)
+
+        if primary_key_result.status:
+            print("Primary key result rows: ", primary_key_result.rows)
+            #inserted_primary_key = primary_key_result.rows[0][0]
+            inserted_primary_key = primary_key_result.rows[0]['LAST_INSERT_ID()']
+            print( inserted_primary_key)
+        else:
+            # Handle the error while fetching the primary key
+            print("Error fetching primary key")
+    else:
+    # Handle the error while inserting the row
+        print("Error inserting row")
+
+    # Copy the cart details into the OrderItems table with the Order ID from the previous step
+    for item in cart_items:
+        result = DB.insertOne("INSERT INTO IS601_OrderItems (order_id, product_id, quantity, unit_price) VALUES (%s, %s, %s, %s)",
+                        *(inserted_primary_key, item['product_id'], item['quantity'], item['cost']))
+        
+        if not result.status:
+            flash("Error adding order items. Please try again.", "danger")
+            return False
+
+        # Update the Products table stock for each item to deduct the ordered quantity
+        result = DB.update("UPDATE IS601_Products SET stock = stock - %s WHERE id = %s", *(item['quantity'], item['product_id']))
+
+        if not result.status:
+            flash("Error updating product stock. Please try again.", "danger")
+            return False
+    
+
+    # Clear out the user's cart after successful order
+    result = DB.delete("DELETE FROM IS601_Cart WHERE user_id = %s", user_id)
+
+    if not result.status:
+        flash("Error clearing cart. Please try again.", "danger")
+        return False
+    # Redirect user to Order Confirmation Page
+    return redirect(url_for("shop.confirm_order"))
+
+

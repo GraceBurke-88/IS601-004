@@ -28,7 +28,9 @@
                 </td>
                 <td>
                     <!-- when the user clicks on the product name in the cart, they will be taken to the product details page for that specific product -->
-                    <a href="{{ url_for('shop.product_page', product_id=row['product_id']) }}">
+                
+                    <a href="{{ url_for('shop.product_page', product_id=row['product_id']) }}" class="text-dark">
+            
                         {{row["name"]}}
                     </a>
                 </td>
@@ -74,9 +76,8 @@
                     </form>
                 </td>
                 <!-- adding checkout button gnb5 4/23-->
-                <td><a href="{{ url_for('shop.checkout') }}" class="btn btn-primary">Proceed to Checkout</a></td>
-                <td class="text-end" colspan="100%">
-                    <h4>Total: ${{ns.total or 0}}</h3>
+                <td class="text-end" colspan="100%"> 
+                    <h5><a href="{{ url_for('shop.checkout') }}" class="btn btn-primary btn-sm">Checkout</a> Total: ${{ns.total or 0}}</h5>
                 </td>
             </tr>
         </tbody>
