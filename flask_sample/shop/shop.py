@@ -405,3 +405,65 @@ def checkout():
     return render_template('checkout.html', form=form, cart_items=cart_items, total_amount=total_amount)
 
 
+
+#gnb5 added 5/4/23 
+# order history page
+@shop.route('/purchase_history', methods=['GET'])
+@login_required
+def purchase_history():
+    user_id = current_user.id
+    result = DB.selectAll("""SELECT o.id, o.created, o.total_price, o.money_received
+                            FROM IS601_Orders o
+                            WHERE o.user_id = %s
+                            ORDER BY o.created DESC
+                            LIMIT 10
+                        """, user_id)
+
+    if result.status:
+        orders = result.rows
+    else:
+        orders = []
+
+    return render_template('purchase_history.html', orders=orders)
+
+@shop.route('/shop/order_details/<int:order_id>', methods=['GET'])
+@login_required
+def order_details(order_id):
+    # The code here should be the same as the confirm_order function
+    # except for the "Thank you" message
+    # ...
+    # Retrieve the order and related order items from the database
+    order_result = DB.selectOne("SELECT * FROM IS601_Orders WHERE id = %s", order_id)
+    if not order_result.status:
+        flash("Error", "danger")
+        return False
+
+    order = order_result.row
+    #Need to use a join to display names on confirmation page 
+
+    order_items_result = DB.selectAll("""SELECT io.*, p.name
+                                    FROM IS601_OrderItems io
+                                    JOIN IS601_Products p ON io.product_id = p.id
+                                    WHERE io.order_id = %s
+                                """, order_id)
+
+
+    if not order_items_result.status:
+        flash("Error", "danger")
+        return False
+
+    order_items = order_items_result.rows
+
+    # Calculate the total value
+    total_value = sum(item['unit_price'] * item['quantity'] for item in order_items)
+
+    # Retrieve the payment method and amount paid
+    payment_method = order['payment_method']
+    amount_paid = order['money_received']
+
+    return render_template('order_details.html', order_id=order_id, order=order, order_items=order_items, total_value=total_value, payment_method=payment_method, amount_paid=amount_paid)
+
+    #return render_template('order_details.html', order_id=order_id, order=order, order_items=order_items, total_value=total_value, payment_method=payment_method, amount_paid=amount_paid)
+
+
+
