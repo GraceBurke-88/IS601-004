@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block title %}Order Confirmation{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <h3>Order Confirmation</h3>
+    <p>Thank you for your purchase!</p>
+
+    <h4>Order Details</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order_items %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.unit_price }}</td>
+                    <td>{{ item.unit_price * item.quantity }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p>Total Value: {{ total_value }}</p> 
+    <h4>Payment Details</h4>
+    <p>Payment Method: {{ order.payment_method }}</p>
+    <p>Amount Paid: {{ order.money_received }}</p>
+</div>
+{% endblock %}
