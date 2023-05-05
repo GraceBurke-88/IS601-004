@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block title %}{{type}} Checkout{% endblock %}
+{% block content %}
+{% from "_formhelpers.html" import render_field %}
+<!-- form to checkout -->
+<div class="container-fluid">
+    <div class="h3">{{type}} Checkout</div>
+    <hr>
+    <h3>Pending Purchase</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>Desired Quantity</th>
+                <th>Unit Cost</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.cost }}</td>
+                    <td>{{ item.cost * item.quantity }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <h5>Cart Total: ${{ total_amount }}</h5>
+
+        {{render_field(form.payment_method)}}
+        {{render_field(form.money_received)}}
+        {{render_field(form.address)}}
+        {{render_field(form.city)}}
+        {{render_field(form.state)}}
+        {{render_field(form.zip_code)}}
+        <div class="d-flex justify-content-between">
+            <a href="{{ url_for('shop.cart') }}" class="btn btn-warning">Return to Cart</a>
+            {{form.submit(class="btn btn-primary")}}
+        </div>
+    </form>
+</div>
+{% endblock %}

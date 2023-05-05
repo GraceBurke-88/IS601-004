@@ -28,7 +28,7 @@ class DB:
     db = None
     def __runQuery(op, isMany, queryString, args = None):
         response = None
-       
+    
         try:
             db = DB.getDB()
             cursor = db.cursor(dictionary=True)
