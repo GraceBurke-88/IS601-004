@@ -1,9 +1,9 @@
 <table><tr><td> <em>Assignment: </em> IS601 Milestone 3 Shop Project</td></tr>
 <tr><td> <em>Student: </em> Grace Burke (gnb5)</td></tr>
-<tr><td> <em>Generated: </em> 5/5/2023 9:59:02 AM</td></tr>
+<tr><td> <em>Generated: </em> 5/5/2023 10:06:17 AM</td></tr>
 <tr><td> <em>Grading Link: </em> <a rel="noreferrer noopener" href="https://learn.ethereallab.app/homework/IS601-004-S23/is601-milestone-3-shop-project/grade/gnb5" target="_blank">Grading</a></td></tr></table>
 <table><tr><td> <em>Instructions: </em> <ol><li>Checkout Milestone3 branch</li><li>Create a new markdown file called milestone3.md</li><li>git add/commit/push immediate</li><li>Fill in the below deliverables</li><li>At the end copy the markdown and paste it into milestone3.md</li><li>Add/commit/push the changes to Milestone3</li><li>PR Milestone3 to dev and verify</li><li>PR dev to prod and verify</li><li>Checkout dev locally and pull changes to get ready for Milestone 4</li><li>Submit the direct link to this new milestone3.md file from your GitHub prod branch to Canvas</li></ol><p>Note: Ensure all images appear properly on GitHub and everywhere else. Images are only accepted from dev or prod, not localhost. All website links must be from prod (you can assume/infer this by getting your dev URL and changing dev to prod).</p></td></tr></table>
-<table><tr><td> <em>Deliverable 1: </em> Orders will be able to be recorded </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707834-bf5a5b13-ec36-4597-9741-aa830c195be2.png"></td></tr>
+<table><tr><td> <em>Deliverable 1: </em> Orders will be able to be recorded </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707773-e6aef7cb-d5b2-4053-bbb1-b09fc609041e.png"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Add a screenshot of the Orders table with valid data in it</td></tr>
 <tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/70772404/236325852-6f444321-edaa-4757-bc8a-33a7ecbffae0.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>Missing first_name/last_name I forgot to include these with the initial db creation<br></p>
@@ -52,9 +52,9 @@
 <tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/GraceBurke-88/IS601-004/pull/71/commits/ede091edb231f2f6a95dd578710bf4cfce161e89">https://github.com/GraceBurke-88/IS601-004/pull/71/commits/ede091edb231f2f6a95dd578710bf4cfce161e89</a> </td></tr>
 <tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/GraceBurke-88/IS601-004/pull/71/commits/f2b1e4a3607138d228a04351db2312e0c1e146e4">https://github.com/GraceBurke-88/IS601-004/pull/71/commits/f2b1e4a3607138d228a04351db2312e0c1e146e4</a> </td></tr>
 <tr><td> <em>Sub-Task 9: </em> Add a direct link to heroku prod for this file</td></tr>
-<tr><td>Not provided</td></tr>
+<tr><td> <a rel="noreferrer noopener" target="_blank" href="https://is601-gnb5-prod.herokuapp.com/shop/checkout">https://is601-gnb5-prod.herokuapp.com/shop/checkout</a> </td></tr>
 </table></td></tr>
-<table><tr><td> <em>Deliverable 2: </em> Order Confirmation Page </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707834-bf5a5b13-ec36-4597-9741-aa830c195be2.png"></td></tr>
+<table><tr><td> <em>Deliverable 2: </em> Order Confirmation Page </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707773-e6aef7cb-d5b2-4053-bbb1-b09fc609041e.png"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Screenshot showing the order details from the purchase form and the related items that were purchased with a thank you message</td></tr>
 <tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/70772404/236474139-ad14c2a6-b5a4-4de9-ac87-7abe8656484f.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>Shows the order details, includes individual and total cost, shows total paid<br></p>
@@ -65,9 +65,9 @@
 <tr><td> <em>Sub-Task 3: </em> Add related pull request link(s)</td></tr>
 <tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/GraceBurke-88/IS601-004/pull/71/commits/f2b1e4a3607138d228a04351db2312e0c1e146e4">https://github.com/GraceBurke-88/IS601-004/pull/71/commits/f2b1e4a3607138d228a04351db2312e0c1e146e4</a> </td></tr>
 <tr><td> <em>Sub-Task 4: </em> Add a direct link to heroku prod for this file</td></tr>
-<tr><td>Not provided</td></tr>
+<tr><td> <a rel="noreferrer noopener" target="_blank" href="https://is601-gnb5-prod.herokuapp.com/confirm_order/93">https://is601-gnb5-prod.herokuapp.com/confirm_order/93</a> </td></tr>
 </table></td></tr>
-<table><tr><td> <em>Deliverable 3: </em> User will be able to see their Purchase History </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707834-bf5a5b13-ec36-4597-9741-aa830c195be2.png"></td></tr>
+<table><tr><td> <em>Deliverable 3: </em> User will be able to see their Purchase History </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707773-e6aef7cb-d5b2-4053-bbb1-b09fc609041e.png"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Add a screenshot showing purchase history for a user</td></tr>
 <tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/70772404/236474881-00fb7226-03ac-4dad-a19c-a2fddad25328.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>Shows order history for a user, can click on individual orders to see<br>history.<br></p>
@@ -83,9 +83,10 @@
 <tr><td> <em>Sub-Task 4: </em> Add related pull request link(s)</td></tr>
 <tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/GraceBurke-88/IS601-004/pull/71/commits/2c80d470f056544e9f0801236931e370c6951c18">https://github.com/GraceBurke-88/IS601-004/pull/71/commits/2c80d470f056544e9f0801236931e370c6951c18</a> </td></tr>
 <tr><td> <em>Sub-Task 5: </em> Add a direct link to heroku prod for this file</td></tr>
-<tr><td>Not provided</td></tr>
+<tr><td> <a rel="noreferrer noopener" target="_blank" href="https://is601-gnb5-prod.herokuapp.com/purchase_history">https://is601-gnb5-prod.herokuapp.com/purchase_history</a> </td></tr>
+<tr><td> <a rel="noreferrer noopener" target="_blank" href="https://is601-gnb5-prod.herokuapp.com/shop/order_details/93">https://is601-gnb5-prod.herokuapp.com/shop/order_details/93</a> </td></tr>
 </table></td></tr>
-<table><tr><td> <em>Deliverable 4: </em> Store Owner Purchase History </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707834-bf5a5b13-ec36-4597-9741-aa830c195be2.png"></td></tr>
+<table><tr><td> <em>Deliverable 4: </em> Store Owner Purchase History </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707773-e6aef7cb-d5b2-4053-bbb1-b09fc609041e.png"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Add a screenshot showing purchase history from multiple users</td></tr>
 <tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/70772404/236475706-d3a8c729-7b3a-4a73-b9d3-554c7780ed10.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>Shows list of 10 most recent purchases. Shows the username, timestamp, etc., links<br>are clickable to see order details<br></p>
@@ -101,7 +102,8 @@
 <tr><td> <em>Sub-Task 4: </em> Add related pull request link(s)</td></tr>
 <tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/GraceBurke-88/IS601-004/pull/71/commits/f5f0a292da7e8530b655dee11e93fdf1650a10ab">https://github.com/GraceBurke-88/IS601-004/pull/71/commits/f5f0a292da7e8530b655dee11e93fdf1650a10ab</a> </td></tr>
 <tr><td> <em>Sub-Task 5: </em> Add a direct link to heroku prod for this file</td></tr>
-<tr><td>Not provided</td></tr>
+<tr><td> <a rel="noreferrer noopener" target="_blank" href="https://is601-gnb5-prod.herokuapp.com/shop/admin/purchase_history">https://is601-gnb5-prod.herokuapp.com/shop/admin/purchase_history</a> </td></tr>
+<tr><td> <a rel="noreferrer noopener" target="_blank" href="https://is601-gnb5-prod.herokuapp.com/shop/order_details/92">https://is601-gnb5-prod.herokuapp.com/shop/order_details/92</a> </td></tr>
 </table></td></tr>
 <table><tr><td> <em>Deliverable 5: </em> Misc </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707773-e6aef7cb-d5b2-4053-bbb1-b09fc609041e.png"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Add screenshot of the Cart page showing the button to place an order</td></tr>
