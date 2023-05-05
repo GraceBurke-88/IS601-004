@@ -279,7 +279,7 @@ def process_order(form, current_user):
     cart_items = get_cart_items(current_user.id)
     total_price = sum(item['cost'] * item['quantity'] for item in cart_items)
     # Verify if the payment is valid
-    # Verify if the payment is valid
+    # implemented by gnb5 5/4/23
     if form.money_received.data < total_price:
         flash("Payment amount is not sufficient. Please try again.", "warning")
         return False
@@ -287,7 +287,7 @@ def process_order(form, current_user):
     #flash(cart_items)
 
 
-    # Verify product price and stock
+    # Verify product price and stock implemented by gnb5 4/23
     for item in cart_items:
         result = DB.selectOne("SELECT cost, stock FROM IS601_Products WHERE id = %s", item['product_id'])
         print(f"Result: {result}")  # Debug print statement
@@ -314,7 +314,7 @@ def process_order(form, current_user):
 
     #FIX THIS 
     #result = DB.insertOne("INSERT INTO IS601_Orders (user_id, payment_method, money_received, address) VALUES (%s, %s, %s, %s)", current_user.id, form.payment_method.data, form.money_received.data, form.address.data)
-    result = DB.insertOne("INSERT INTO IS601_Orders (user_id, payment_method, money_received, address, total_price) VALUES (%s, %s, %s, %s, %s)", current_user.id, form.payment_method.data, form.money_received.data, form.address.data, total_price)
+    result = DB.insertOne("INSERT INTO IS601_Orders (user_id, payment_method, money_received, address, total_price) VALUES (%s, %s, %s, %s, %s)", current_user.id, form.payment_method.data, form.money_received.data, address, total_price)
 
 
     if not result.status:
@@ -392,7 +392,7 @@ def checkout():
     form = CheckoutForm()
     if form.validate_on_submit():
         # Process the form data and create an order in the database
-        # You'll need to implement this function
+        # still need to implement this function
         success = process_order(form, current_user)
         if success:
             flash("Order successfully placed!", "success")
@@ -401,6 +401,88 @@ def checkout():
             flash("Payment failed. Please try again.", "danger")
 
     #return render_template('checkout.html', form=form)
-    return render_template('checkout.html', form=form, total_amount=total_amount) #adding total of cart
+    #return render_template('checkout.html', form=form, total_amount=total_amount) #adding total of cart
+    return render_template('checkout.html', form=form, cart_items=cart_items, total_amount=total_amount)
 
 
+
+#gnb5 added 5/4/23 
+# order history page
+@shop.route('/purchase_history', methods=['GET'])
+@login_required
+def purchase_history():
+    user_id = current_user.id
+    result = DB.selectAll("""SELECT o.id, o.created, o.total_price, o.money_received
+                            FROM IS601_Orders o
+                            WHERE o.user_id = %s
+                            ORDER BY o.created DESC
+                            LIMIT 10
+                        """, user_id)
+
+    if result.status:
+        orders = result.rows
+    else:
+        orders = []
+
+    return render_template('purchase_history.html', orders=orders)
+
+@shop.route('/shop/order_details/<int:order_id>', methods=['GET'])
+@login_required
+def order_details(order_id):
+    # The code here should be the same as the confirm_order function
+    # except for the "Thank you" message
+    # ...
+    # Retrieve the order and related order items from the database
+    order_result = DB.selectOne("SELECT * FROM IS601_Orders WHERE id = %s", order_id)
+    if not order_result.status:
+        flash("Error", "danger")
+        return False
+
+    order = order_result.row
+    #Need to use a join to display names on confirmation page 
+
+    order_items_result = DB.selectAll("""SELECT io.*, p.name
+                                    FROM IS601_OrderItems io
+                                    JOIN IS601_Products p ON io.product_id = p.id
+                                    WHERE io.order_id = %s
+                                """, order_id)
+
+
+    if not order_items_result.status:
+        flash("Error", "danger")
+        return False
+
+    order_items = order_items_result.rows
+
+    # Calculate the total value
+    total_value = sum(item['unit_price'] * item['quantity'] for item in order_items)
+
+    # Retrieve the payment method and amount paid
+    payment_method = order['payment_method']
+    amount_paid = order['money_received']
+
+    return render_template('order_details.html', order_id=order_id, order=order, order_items=order_items, total_value=total_value, payment_method=payment_method, amount_paid=amount_paid)
+
+    #return render_template('order_details.html', order_id=order_id, order=order, order_items=order_items, total_value=total_value, payment_method=payment_method, amount_paid=amount_paid)
+
+
+
+#gnb5 implemented 5/4/23
+#history for admin user
+@shop.route('/shop/admin/purchase_history', methods=['GET'])
+@login_required
+@admin_permission.require(http_exception=403)
+def admin_purchase_history():
+    result = DB.selectAll("""SELECT o.id, o.created, o.total_price, o.money_received, o.user_id, u.username
+                            FROM IS601_Orders o
+                            JOIN IS601_Users u ON o.user_id = u.id
+                            ORDER BY o.created DESC
+                            LIMIT 10
+                        """)
+
+    if result.status:
+        orders = result.rows
+    else:
+        orders = []
+
+    return render_template('admin_purchase_history.html', orders=orders)

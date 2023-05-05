@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block title %}Purchase History{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <div class="h3">Purchase History</div>
+    <hr>
+    <ul class="list-group">
+        {% for order in orders %}
+            <li class="list-group-item">
+                <a href="{{ url_for('shop.order_details', order_id=order.id) }}">
+                    Order - {{ order.created.strftime('%Y-%m-%d %H:%M:%S') }} - Total: ${{ order.total_price }} - Payment: ${{ order.money_received }}
+                </a>
+            </li>
+        {% else %}
+            <li class="list-group-item">No orders found.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

@@ -1,18 +1,18 @@
 {% extends "layout.html" %}
-{% block title %}Order Confirmation{% endblock %}
+{% block title %}Order Details{% endblock %}
 {% block content %}
 <div class="container-fluid">
-    <h3>Order Confirmation</h3>
-    <p>Thank you for your purchase we hope your items are Wonderfuel!</p>
-
-    <h4>Order Details</h4>
+    <div class="h3">Order Details</div>
+    <hr>
+    <p>Order ID: {{ order_id }}</p>
+    <p>Shipping Address: {{ order.address }}</p>
     <table class="table">
         <thead>
             <tr>
-                <th>Item</th>
+                <th>Item Name</th>
                 <th>Quantity</th>
-                <th>Price</th>
-                <th>Total</th>
+                <th>Unit Price</th>
+                <th>Subtotal</th>
             </tr>
         </thead>
         <tbody>
@@ -26,10 +26,8 @@
             {% endfor %}
         </tbody>
     </table>
-    <p>Total Value: {{ total_value }}</p> 
-    <h4>Payment Details</h4>
-    <p>Payment Method: {{ order.payment_method }}</p>
-    <p>Amount Paid: {{ order.money_received }}</p>
-    <p>Shipping Address: {{ order.address }}</p>
+    <p>Total Value: ${{ total_value }}</p>
+    <p>Payment Method: {{ payment_method }}</p>
+    <p>Amount Paid: ${{ amount_paid }}</p>
 </div>
 {% endblock %}
