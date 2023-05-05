@@ -1,14 +1,14 @@
 {% extends "layout.html" %}
-{% block title %}Purchase History{% endblock %}
+{% block title %}Admin Purchase History{% endblock %}
 {% block content %}
 <div class="container-fluid">
-    <div class="h3">Purchase History</div>
+    <div class="h3">Admin Purchase History</div>
     <hr>
     <ul class="list-group">
         {% for order in orders %}
             <li class="list-group-item">
                 <a href="{{ url_for('shop.order_details', order_id=order.id) }}">
-                    Order - {{ order.created.strftime('%Y-%m-%d %H:%M:%S') }} - Total: ${{ order.total_price }} - Payment: ${{ order.money_received }}
+                    Order #{{ order.id }} - User: {{ order.username }} - {{ order.created.strftime('%Y-%m-%d %H:%M:%S') }} - Total: ${{ order.total_price }} - Payment: ${{ order.money_received }}
                 </a>
             </li>
         {% else %}

@@ -467,3 +467,22 @@ def order_details(order_id):
 
 
 
+#gnb5 implemented 5/4/23
+#history for admin user
+@shop.route('/shop/admin/purchase_history', methods=['GET'])
+@login_required
+@admin_permission.require(http_exception=403)
+def admin_purchase_history():
+    result = DB.selectAll("""SELECT o.id, o.created, o.total_price, o.money_received, o.user_id, u.username
+                            FROM IS601_Orders o
+                            JOIN IS601_Users u ON o.user_id = u.id
+                            ORDER BY o.created DESC
+                            LIMIT 10
+                        """)
+
+    if result.status:
+        orders = result.rows
+    else:
+        orders = []
+
+    return render_template('admin_purchase_history.html', orders=orders)
